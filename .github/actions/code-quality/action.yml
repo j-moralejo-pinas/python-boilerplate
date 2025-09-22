@@ -1,0 +1,38 @@
+name: Code Quality
+description: Install code quality dependencies and run pydoclint, ruff check, and pyright.
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install PDM
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install pdm
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pdm install --no-self -G code-quality
+
+    - name: Run pydoclint
+      shell: bash
+      run: |
+        pydoclint src/
+
+    - name: Ruff Check
+      uses: chartboost/ruff-action@v1
+      with:
+        args: check .
+
+    - name: Pyright
+      shell: bash
+      run: pdm run pyright

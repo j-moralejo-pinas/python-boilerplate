@@ -1,0 +1,30 @@
+name: Run Tests
+description: Install test dependencies and run pytest with coverage.
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install PDM
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install pdm
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pdm install --no-self -G test
+
+    - name: Run tests
+      shell: bash
+      run: |
+        export PYTHONPATH=$(pwd)/src
+        pdm run pytest --cov=src --cov-report=term-missing
