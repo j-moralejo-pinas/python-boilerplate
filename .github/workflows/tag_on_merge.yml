@@ -8,10 +8,6 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   call-reusable:
     uses: j-moralejo-pinas/ci-cd-python-gitflow/.github/workflows/tag_on_merge.yml@main

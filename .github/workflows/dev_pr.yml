@@ -5,10 +5,6 @@ on:
     branches:
       - dev
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   call-reusable:
     uses: j-moralejo-pinas/ci-cd-python-gitflow/.github/workflows/dev_pr.yml@main
