@@ -13,27 +13,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  semver-tag:
-    name: semver-tag
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    outputs:
-      new_tag: ${{ steps.semver.outputs.new_tag }}
-      version: ${{ steps.semver.outputs.version }}
-    steps:
-      - name: Run semver tag action
-        id: semver
-        uses: ./.github/actions/semver-tag
-
-  publish:
-    name: publish
-    needs: semver-tag
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run publish action
-        uses: ./.github/actions/publish
-        with:
-          tag: ${{ needs.semver-tag.outputs.new_tag }}
-          version: ${{ needs.semver-tag.outputs.version }}
-          test_pypi_token: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          pypi_token: ${{ secrets.PYPI_API_TOKEN }}
+  call-reusable:
+    uses: j-moralejo-pinas/ci-cd-python-gitflow/.github/workflows/release_on_merge.yml@main
+    secrets: inherit

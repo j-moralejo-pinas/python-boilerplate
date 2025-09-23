@@ -10,23 +10,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  format:
-    name: format
-    runs-on: ubuntu-latest
-    outputs:
-      did_push: ${{ steps.format.outputs.did_push || 'false' }}
-    steps:
-      - name: Run format action
-        id: format
-        uses: ./.github/actions/format
-        with:
-          pat_autofix: ${{ secrets.PAT_AUTOFIX }}
-
-  test:
-    name: test
-    runs-on: ubuntu-latest
-    needs: format
-    if: needs.format.outputs.did_push != 'true'
-    steps:
-      - name: Run test action
-        uses: ./.github/actions/test
+  call-reusable:
+    uses: j-moralejo-pinas/ci-cd-python-gitflow/.github/workflows/dev_pr.yml@main
+    secrets: inherit
