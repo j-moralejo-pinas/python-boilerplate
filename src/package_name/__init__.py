@@ -13,7 +13,7 @@ except ImportError:
         __version__ = "0.0.0"
     else:
         try:
-            __version__ = version("dist_classicrl")
+            __version__ = version("package_name")
         except PackageNotFoundError:
             __version__ = "0.0.0"
         finally:
