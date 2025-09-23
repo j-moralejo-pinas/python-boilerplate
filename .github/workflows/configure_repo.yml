@@ -161,8 +161,8 @@ jobs:
 
           # Main: Merge only, checks: check-source-branch, format, code-quality, test
           replace_ruleset "Main" "main"  "$(jq -n '["merge"]')" \
-            "check-source-branch" "format" "code-quality" "test"
+            "call-reusable / check-source-branch" "call-reusable / format" "call-reusable / code-quality" "call-reusable / test"
 
           # Dev: Merge + Squash, checks: format, test
           replace_ruleset "Dev"  "dev"   "$(jq -n '["merge","squash"]')" \
-            "format" "test"
+            "call-reusable / format" "call-reusable / test"
