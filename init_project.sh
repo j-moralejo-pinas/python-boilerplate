@@ -1,23 +1,25 @@
 #!/bin/bash
 
 # Script to initialize a Python project with custom parameters
-# Usage: ./init_project.sh "project-name" "Project description" "3.11" ["3.12"]
+# Usage: ./init_project.sh "project-name" "Project description" "3.11" ["3.12"] ["topic1 topic2 topic3"]
 
 set -e  # Exit on any error
 
 # Function to display usage
 usage() {
-    echo "Usage: $0 <project-name> <description> <min-python-version> [max-python-version]"
+    echo "Usage: $0 <project-name> <description> <min-python-version> [max-python-version] [keywords]"
     echo ""
     echo "Arguments:"
     echo "  project-name         : Name of the project (e.g., 'my-awesome-project')"
     echo "  description          : Description of the project"
     echo "  min-python-version   : Minimum Python version (e.g., '3.11')"
     echo "  max-python-version   : Optional maximum Python version (not included, e.g., '3.12')"
+    echo "  keywords             : Optional space-separated list of keywords/topics (e.g., 'python automation testing')"
     echo ""
     echo "Examples:"
     echo "  $0 'my-data-analyzer' 'A tool for analyzing data' '3.9'"
     echo "  $0 'web-scraper' 'A web scraping utility' '3.10' '3.12'"
+    echo "  $0 'ml-toolkit' 'Machine learning toolkit' '3.11' '' 'machine-learning python ai'"
     exit 1
 }
 
@@ -65,23 +67,40 @@ rename_directories() {
     done
 }
 
-# Function to find and replace Python version patterns
-replace_python_version() {
-    local min_version="$1"
-    local file_patterns=("*.py" "*.toml" "*.rst" "*.md" "*.txt" "*.ini" "*.yaml" "*.yml")
-
-    echo "  Replacing Python version patterns with '$min_version'"
-
-    # Replace patterns like "3.13", "Python 3.13", "python=3.13", etc.
-    for pattern in "${file_patterns[@]}"; do
-        find . -name "$pattern" -type f -exec sed -i -E "s|([Pp]ython[[:space:]]*=?[[:space:]]*)[0-9]+\.[0-9]+|\1$min_version|g" {} + 2>/dev/null || true
-        find . -name "$pattern" -type f -exec sed -i -E "s|([Pp]ython[[:space:]]+)[0-9]+\.[0-9]+|\1$min_version|g" {} + 2>/dev/null || true
-        find . -name "$pattern" -type f -exec sed -i -E "s|([^a-zA-Z])[0-9]+\.[0-9]+([^0-9]|$)|\1$min_version\2|g" {} + 2>/dev/null || true
+# Function to update keywords in pyproject.toml
+update_keywords() {
+    local keywords_string="$1"
+    
+    if [[ -z "$keywords_string" ]]; then
+        echo "  No keywords provided, keeping existing keywords"
+        return 0
+    fi
+    
+    echo "  Updating keywords with: $keywords_string"
+    
+    # Convert space-separated keywords to TOML array format
+    local keywords_array=""
+    IFS=' ' read -ra KEYWORDS_ARRAY <<< "$keywords_string"
+    
+    for i in "${!KEYWORDS_ARRAY[@]}"; do
+        if [[ $i -eq 0 ]]; then
+            keywords_array="\"${KEYWORDS_ARRAY[i]}\""
+        else
+            keywords_array="$keywords_array, \"${KEYWORDS_ARRAY[i]}\""
+        fi
     done
+    
+    # Update keywords line in pyproject.toml
+    if [[ -f "pyproject.toml" ]]; then
+        sed -i "s|^keywords = \[.*\]|keywords = [$keywords_array]|" pyproject.toml
+        echo "  ✓ Keywords updated to: [$keywords_array]"
+    else
+        echo "  ⚠ Warning: pyproject.toml not found"
+    fi
 }
 
 # Check arguments
-if [[ $# -lt 3 || $# -gt 4 ]]; then
+if [[ $# -lt 3 || $# -gt 5 ]]; then
     echo "Error: Invalid number of arguments"
     usage
 fi
@@ -90,6 +109,7 @@ PROJECT_NAME="$1"
 DESCRIPTION="$2"
 MIN_PYTHON="$3"
 MAX_PYTHON="$4"
+KEYWORDS="$5"
 
 # Validate project name
 if [[ ! "$PROJECT_NAME" =~ ^[a-zA-Z0-9_-]+$ ]]; then
@@ -117,6 +137,7 @@ echo "Snake Case Name: $SNAKE_CASE_NAME"
 echo "Description: $DESCRIPTION"
 echo "Min Python Version: $MIN_PYTHON"
 echo "Max Python Version: ${MAX_PYTHON:-'Not specified'}"
+echo "Keywords: ${KEYWORDS:-'Not specified'}"
 echo ""
 
 # Step 1: Update pyproject.toml description
@@ -129,10 +150,15 @@ else
     echo "  ⚠ Warning: pyproject.toml not found"
 fi
 
+# Step 1b: Update keywords in pyproject.toml
+echo ""
+echo "Step 1b: Updating keywords in pyproject.toml..."
+update_keywords "$KEYWORDS"
+
 # Step 2: Replace Python version references
 echo ""
 echo "Step 2: Replacing Python version references..."
-replace_python_version "$MIN_PYTHON"
+find_and_replace "3.x" "$MIN_PYTHON"
 echo "  ✓ Python version references updated"
 
 # Step 3: Update requires-python in pyproject.toml
@@ -233,6 +259,7 @@ echo "  • Package name: $SNAKE_CASE_NAME"
 echo "  • Description: $DESCRIPTION"
 echo "  • Python version: $MIN_PYTHON$([ -n "$MAX_PYTHON" ] && echo " (max: $MAX_PYTHON)")"
 echo "  • requires-python: $REQUIRES_PYTHON"
+echo "  • Keywords: ${KEYWORDS:-'None specified'}"
 echo "  • Renamed directories to match new package name"
 echo ""
 echo "Next steps:"

@@ -11,10 +11,11 @@ jobs:
     # Optional safety gate. Keep if you stored ADMIN_TOKEN in env "prod".
     environment: main
     runs-on: ubuntu-latest
-    
+
     env:
       PYTHON_VERSION: "3.13"
-      REPO_TOPICS_JSON: '["python", "automation"]'
+      PYTHON_VERSION_MAX: ""  # Optional maximum Python version (empty by default)
+      REPO_TOPICS: "python automation"  # Space-separated topics
 
     steps:
       - uses: actions/checkout@v4
@@ -42,10 +43,12 @@ jobs:
           echo "Repository name: $REPO_NAME"
           echo "Repository description: $REPO_DESC"
           echo "Python version: $PYTHON_VERSION"
+          echo "Python max version: ${PYTHON_VERSION_MAX:-'Not specified'}"
+          echo "Topics: ${REPO_TOPICS:-'Not specified'}"
 
-          # Run the init_project.sh script with repo name, description, and configured Python version
+          # Run the init_project.sh script with repo name, description, Python versions, and topics
           chmod +x ./init_project.sh
-          ./init_project.sh "$REPO_NAME" "$REPO_DESC" "$PYTHON_VERSION"
+          ./init_project.sh "$REPO_NAME" "$REPO_DESC" "$PYTHON_VERSION" "$PYTHON_VERSION_MAX" "$REPO_TOPICS"
 
           # Configure git
           git config user.name "github-actions[bot]"
@@ -93,7 +96,14 @@ jobs:
           # Use REPO_SLUG from initialization step
           REPO_SLUG="${REPO_SLUG:-$GITHUB_REPOSITORY}"
 
-          # Use topics from environment variable
+          # Convert space-separated topics to JSON array
+          if [ -n "${REPO_TOPICS:-}" ]; then
+            REPO_TOPICS_JSON=$(echo "$REPO_TOPICS" | tr ' ' '\n' | jq -R . | jq -s .)
+            echo "Topics to set: $REPO_TOPICS_JSON"
+          else
+            REPO_TOPICS_JSON='[]'
+            echo "No topics specified, setting empty array"
+          fi
 
           gh api --method PUT \
             -H "Accept: application/vnd.github+json" \
