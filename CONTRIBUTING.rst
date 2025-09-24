@@ -115,7 +115,7 @@ When running code during development, use:
 Branching Model and Workflow
 ============================
 
-This project follows a structured Git branching model to maintain code quality and enable collaborative development.
+This project follows a structured Gitflow branching model to maintain code quality and enable collaborative development.
 
 Branch Types
 ------------
@@ -141,6 +141,13 @@ Branch Types
 - Naming convention: ``feature/feature-name`` or ``feature/issue-number-description``
 - Merged back into ``dev`` via pull request
 
+**release/***
+~~~~~~~~~~~~~
+- Created for preparing a new production release
+- Branched from ``dev``
+- Naming convention: ``release/version-number``
+- Used for final testing and bug fixes before merging into ``main``
+
 **bugfix/***
 ~~~~~~~~~~~~
 - Created for non-urgent bug fixes
@@ -154,6 +161,13 @@ Branch Types
 - Branched from ``main``
 - Naming convention: ``hotfix/critical-issue-description``
 - Merged directly into ``main`` and then back-merged into ``dev``
+
+**meta/***
+~~~~~~~~~~~~
+- Created for non-code changes (documentation, CI/CD, etc.)
+- Branched from ``main``
+- Naming convention: ``meta/change-description``
+- Merged back into ``main`` via pull request
 
 Merge Workflows
 ---------------
@@ -170,23 +184,25 @@ Merge Workflows
     git rebase origin/dev
 
 2. Create a pull request from ``feature/your-feature`` to ``dev``
-3. Use **squash and merge** to maintain clean commit history
+3. Use **squash commit** or **squash and merge** to maintain clean commit history
 4. Delete the feature branch after successful merge
 
-**Dev → Main**
-~~~~~~~~~~~~~~
+**Dev → Release → Main**
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Rebase ``main`` into ``dev``:
+1. When ready for a release, create a release branch from ``dev``:
 
 .. code-block:: bash
 
     git checkout dev
-    git fetch origin
-    git rebase origin/main
+    git pull origin dev
+    git checkout -b release/x.y.z
+    git push origin release/x.y.z
 
-2. Create a pull request from ``dev`` to ``main``
-3. Use **merge commit** (not squash) to preserve development history
-4. Ensure all tests pass and code review is complete
+2. Perform final testing and bug fixes on the release branch
+3. Create a pull request from ``release/x.y.z`` to ``main``
+4. Use **squash commit** for a clean release commit
+5. After merge, CI pipeline will tag the release, publish packages, deploy documentation and merge ``main`` back into ``dev`` to keep branches synchronized
 
 **Hotfix → Main**
 ~~~~~~~~~~~~~~~~~
@@ -201,13 +217,28 @@ Merge Workflows
 
 2. Create a pull request from ``hotfix/critical-fix`` to ``main``
 3. Use **squash and merge** for clean hotfix commits
-4. After merge, back-merge ``main`` into ``dev`` to keep branches synchronized
+4. After merge, CI pipeline will tag the hotfix release, publish packages, deploy documentation and merge ``main`` back into ``dev`` to keep branches synchronized
+
+**Meta → Main**
+~~~~~~~~~~~~~~~
+
+1. Rebase ``main`` into your meta branch:
+
+.. code-block:: bash
+
+    git checkout meta/your-meta-change
+    git fetch origin
+    git rebase origin/main
+
+2. Create a pull request from ``meta/your-meta-change`` to ``main``
+3. Use **squash and merge** for clean meta commits
+4. After merge, CI pipeline will deploy documentation and merge ``main`` back into ``dev`` to keep branches synchronized
 
 Branch Protection Rules
 -----------------------
 
 - **main**: Requires pull request reviews, status checks must pass
-- **dev**: Requires pull request reviews, allows fast-forward merges
+- **dev**: Requires pull request reviews, status checks must pass
 - Direct pushes to ``main`` and ``dev`` are prohibited
 - All branches must be up-to-date before merging
 
@@ -507,6 +538,7 @@ Writing Documentation
 - Update relevant ``.rst`` files in the ``docs/`` directory
 - Include examples in docstrings when helpful
 - Keep documentation up to date with code changes
+- Documentation links should be relative and use the GitHub format (e.g., `Name <NAME.rst>`_)
 
 Submitting Changes
 ==================
@@ -557,9 +589,16 @@ Pull Request Process
 
 5. Create a pull request to dev on GitHub with:
 
-   - Clear description of changes
-   - Reference to any related issues
-   - Screenshots or examples if applicable
+    - Reference to any related issues
+    - Screenshots or examples if applicable
+    - Clear description of changes in the PR body in the following format:
+        - Added: New features or modules
+        - Changed: Modifications to existing functionality
+        - Fixed: Bug fixes
+
+.. note::
+
+    PR body format is important for automatic changelog generation.
 
 Commit Message Format
 ---------------------
