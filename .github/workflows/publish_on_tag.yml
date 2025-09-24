@@ -1,4 +1,4 @@
-name: tag_on_merge
+name: publish_on_tag
 
 on:
   push:
@@ -10,5 +10,5 @@ permissions:
 
 jobs:
   call-reusable:
-    uses: j-moralejo-pinas/ci-cd-python-gitflow/.github/workflows/tag_on_merge.yml@main
+    uses: j-moralejo-pinas/ci-cd-python-gitflow/.github/workflows/publish_on_tag.yml@main
     secrets: inherit
