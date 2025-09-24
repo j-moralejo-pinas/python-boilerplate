@@ -622,11 +622,12 @@ Understanding the codebase structure will help you contribute effectively:
 .. code-block::
 
     package-name/
-    ├── src/package_name/              # Main package source code
-    │   └── ...
-    ├── tests/                   # Test suite
-    ├── docs/                    # Documentation
-    └── pyproject.toml           # Project configuration
+    ├── src/                        # Source code
+    │   ├── package_name/           # Main package
+    │   └── other_package/          # Additional package
+    ├── tests/                      # Test suite
+    ├── docs/                       # Documentation
+    └── pyproject.toml              # Project configuration
 
 Getting Help
 ============
