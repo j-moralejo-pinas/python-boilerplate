@@ -23,8 +23,11 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/j-moralejo-pinas/package-name"
+Changelog = "https://package-name.readthedocs.io/en/latest/CHANGELOG.html"
 Source = "https://github.com/j-moralejo-pinas/package-name"
+Documentation = "https://package-name.readthedocs.io/"
 Tracker = "https://github.com/j-moralejo-pinas/package-name/issues"
+
 
 [tool.setuptools]
 package-dir = { "" = "src" }
@@ -53,7 +56,7 @@ dev = [
     "pytest-cov",
     "pyupgrade"
 ]
-docs = ["sphinx", "sphinx-autoapi"]
+docs = ["sphinx", "sphinx-autoapi", "sphinx-linkfix"]
 format = ["ruff", "docformatter", "pyupgrade"]
 code-quality = ["ruff", "pydoclint", "pyright"]
 test = ["pytest", "pytest-cov"]

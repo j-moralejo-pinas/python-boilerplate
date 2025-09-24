@@ -1,7 +1,7 @@
 {
     "terminal.integrated.env.linux": {"PYTHONPATH": "${workspaceFolder}/src"},
     "python.analysis.autoImportCompletions": true,
-    "python.defaultInterpreterPath": "/home/linuxjavier/micromamba/envs/env_name/bin/python",
+    "python.defaultInterpreterPath": "/home/user_name/micromamba/envs/env_name/bin/python",
     "cSpell.language": "en,es",
     "cSpell.dictionaries": [
         "css",
