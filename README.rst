@@ -11,6 +11,22 @@ package-name
 
 A comprehensive boilerplate for Python projects with modern CI/CD setup, testing, documentation, and development tools.
 
+**Quick Start**
+---------------
+1. Create an environment in github called `main` and set the following features:
+    - Required reviewers: my-name
+    - Allow admins to bypass: disabled
+    - Deployment branches and tags: main
+    - Environment secrets:
+        - ``ADMIN_TOKEN``: Administration and actions (read and write)
+2. Set the following secrets in your repository settings:
+    - ``PAT_TOKEN``: Content and Pull Requests (read and write)
+    - ``PYPI_API_TOKEN``: Your PyPI token
+    - ``TEST_PYPI_API_TOKEN``: Your Test PyPI token
+3. Modify the `.github/workflows/configure_repo.yml` file to set up the minimum (an maximum) python versions, and a list of topics
+4. Run the `configure_repo` workflow manually from the Actions tab
+5. Clone your repository and start coding!
+
 🎯 **Project Description**
 --------------------------
 
