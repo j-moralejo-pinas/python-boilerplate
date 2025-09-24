@@ -38,7 +38,7 @@
     "github.copilot.chat.editor.temporalContext.enabled": true,
     "github.copilot.chat.codeGeneration.instructions": [
         {
-            "text": "When running the code, always use conda activate env_name && PYTHONPATH='${workspaceFolder}/src' /home/linuxjavier/micromamba/envs/env_name/bin/python"
+            "text": "When running the code, always use conda activate env_name && PYTHONPATH='${workspaceFolder}/src' /home/user_name/micromamba/envs/env_name/bin/python"
         }
     ],
     "python.testing.pytestEnabled": true,
