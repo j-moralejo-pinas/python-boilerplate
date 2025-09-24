@@ -589,12 +589,12 @@ Pull Request Process
 
 5. Create a pull request to dev on GitHub with:
 
- - Reference to any related issues
- - Screenshots or examples if applicable
- - Clear description of changes in the PR body in the following format [#format]:
-  - Added: New features or modules
-  - Changed: Modifications to existing functionality
-  - Fixed: Bug fixes
+- Reference to any related issues
+- Screenshots or examples if applicable
+- Clear description of changes in the PR body in the following format [#format]:
+    - Added: New features or modules
+    - Changed: Modifications to existing functionality
+    - Fixed: Bug fixes
 
 .. [#format]:: PR body format is important for automatic changelog generation.
 
@@ -794,17 +794,20 @@ Issue Labels
 To help us categorize and prioritize issues, please suggest appropriate labels:
 
 **Type Labels:**
+
 - ``bug``: Something isn't working (includes performance issues)
 - ``enhancement``: New feature or request
 - ``documentation``: Improvements or additions to documentation
 - ``question``: Further information is requested (use GitHub Discussions for general questions)
 
 **Priority Labels:**
+
 - ``critical``: Blocking issue that affects core functionality
 - ``high``: Important issue that should be addressed soon
 - ``medium``: Standard priority
 - ``low``: Nice to have, can be addressed when time permits
 
 **Component Labels:**
+
 - ``documentation``: Issues related to docs
 - ``ci/cd``: Issues related to continuous integration/deployment
