@@ -10,6 +10,7 @@ dynamic = ["version"]
 authors = [{ name = "Javier Moralejo Piñas", email = "j.moralejo.pinas@gmail.com" }]
 readme = "README.rst"
 license = { text = "MIT" }
+keywords = []
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
