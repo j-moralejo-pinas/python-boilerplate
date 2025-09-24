@@ -4,8 +4,8 @@ Installation Guide
 This guide provides step-by-step instructions for installing and setting up the package-name project template. Choose the installation section that best fits your needs.
 
 .. contents:: Table of Contents
-   :local:
-   :depth: 2
+    :local:
+    :depth: 2
 
 Prerequisites
 -------------
@@ -74,7 +74,7 @@ Docker Setup
 
 1. **Clone the Repository**
 
-   ::
+    ::
 
         git clone https://github.com/j-moralejo-pinas/package-name.git
         cd package-name
@@ -110,7 +110,7 @@ Development Setup
 
 1. **Clone and Navigate**
 
-   ::
+    ::
 
         git clone https://github.com/j-moralejo-pinas/package-name.git
         cd package-name
