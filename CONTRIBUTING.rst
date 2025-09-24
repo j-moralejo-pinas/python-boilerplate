@@ -591,12 +591,15 @@ Pull Request Process
 
 - Reference to any related issues
 - Screenshots or examples if applicable
-- Clear description of changes in the PR body in the following format [#format]:
+- Clear description of changes in the PR body in the following format [#format]_:
+
+.. code-block:: bash
+
     - Added: New features or modules
     - Changed: Modifications to existing functionality
     - Fixed: Bug fixes
 
-.. [#format]:: PR body format is important for automatic changelog generation.
+.. [#format] PR body format is important for automatic changelog generation.
 
 Commit Message Format
 ---------------------
