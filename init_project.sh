@@ -31,12 +31,37 @@ find_and_replace() {
     local find_pattern="$1"
     local replace_with="$2"
     local file_patterns=("*.py" "*.toml" "*.rst" "*.md" "*.txt" "*.ini" "*.yaml" "*.yml" "*.json")
-    
+
     echo "  Replacing '$find_pattern' with '$replace_with'"
-    
+
     # Find all relevant files and replace content
     for pattern in "${file_patterns[@]}"; do
         find . -name "$pattern" -type f -exec sed -i "s|$find_pattern|$replace_with|g" {} + 2>/dev/null || true
+    done
+}
+
+# Function to rename directories recursively
+rename_directories() {
+    local old_name="$1"
+    local new_name="$2"
+
+    if [[ "$old_name" == "$new_name" ]]; then
+        return 0
+    fi
+
+    echo "  Looking for directories named '$old_name' to rename to '$new_name'"
+
+    # Find and rename directories from deepest to shallowest to avoid conflicts
+    find . -name "$old_name" -type d | sort -r | while IFS= read -r dir; do
+        parent_dir=$(dirname "$dir")
+        new_path="$parent_dir/$new_name"
+
+        if [[ ! -e "$new_path" ]]; then
+            mv "$dir" "$new_path"
+            echo "    ✓ Renamed $dir to $new_path"
+        else
+            echo "    ⚠ Warning: Cannot rename $dir - $new_path already exists"
+        fi
     done
 }
 
@@ -44,9 +69,9 @@ find_and_replace() {
 replace_python_version() {
     local min_version="$1"
     local file_patterns=("*.py" "*.toml" "*.rst" "*.md" "*.txt" "*.ini" "*.yaml" "*.yml")
-    
+
     echo "  Replacing Python version patterns with '$min_version'"
-    
+
     # Replace patterns like "3.13", "Python 3.13", "python=3.13", etc.
     for pattern in "${file_patterns[@]}"; do
         find . -name "$pattern" -type f -exec sed -i -E "s|([Pp]ython[[:space:]]*=?[[:space:]]*)[0-9]+\.[0-9]+|\1$min_version|g" {} + 2>/dev/null || true
@@ -121,7 +146,7 @@ if [[ -f "pyproject.toml" ]]; then
         # Set only minimum version
         REQUIRES_PYTHON=">=$MIN_PYTHON"
     fi
-    
+
     sed -i "s|^requires-python = .*|requires-python = \"$REQUIRES_PYTHON\"|" pyproject.toml
     echo "  ✓ requires-python set to: $REQUIRES_PYTHON"
 else
@@ -164,18 +189,32 @@ if [[ -f "pyproject.toml" ]]; then
     echo "  ✓ Project name in pyproject.toml updated"
 fi
 
-# Step 6: Rename source directory if needed
+# Step 6: Rename directories throughout the project
 echo ""
-echo "Step 6: Renaming source directory..."
-if [[ -d "src/$CURRENT_SNAKE_NAME" && "$CURRENT_SNAKE_NAME" != "$SNAKE_CASE_NAME" ]]; then
-    mv "src/$CURRENT_SNAKE_NAME" "src/$SNAKE_CASE_NAME"
-    echo "  ✓ Renamed src/$CURRENT_SNAKE_NAME to src/$SNAKE_CASE_NAME"
-elif [[ -d "src/package_name" ]]; then
+echo "Step 6: Renaming directories throughout the project..."
+
+# Rename directories based on the current project name
+if [[ -n "$CURRENT_SNAKE_NAME" && "$CURRENT_SNAKE_NAME" != "$SNAKE_CASE_NAME" ]]; then
+    rename_directories "$CURRENT_SNAKE_NAME" "$SNAKE_CASE_NAME"
+fi
+
+# Also handle common placeholder directory names
+rename_directories "package_name" "$SNAKE_CASE_NAME"
+rename_directories "my_package" "$SNAKE_CASE_NAME"
+rename_directories "test_package" "$SNAKE_CASE_NAME"
+
+# Handle specific common patterns for source and test directories
+if [[ -d "src/package_name" ]]; then
     mv "src/package_name" "src/$SNAKE_CASE_NAME"
     echo "  ✓ Renamed src/package_name to src/$SNAKE_CASE_NAME"
-elif [[ ! -d "src/$SNAKE_CASE_NAME" ]]; then
-    echo "  ⚠ Warning: Expected source directory not found"
 fi
+
+if [[ -d "tests/test_package_name" ]]; then
+    mv "tests/test_package_name" "tests/$SNAKE_CASE_NAME"
+    echo "  ✓ Renamed tests/test_package_name to tests/$SNAKE_CASE_NAME"
+fi
+
+echo "  ✓ Directory renaming complete"
 
 # Step 7: Update setuptools_scm write_to path
 echo ""
@@ -194,9 +233,10 @@ echo "  • Package name: $SNAKE_CASE_NAME"
 echo "  • Description: $DESCRIPTION"
 echo "  • Python version: $MIN_PYTHON$([ -n "$MAX_PYTHON" ] && echo " (max: $MAX_PYTHON)")"
 echo "  • requires-python: $REQUIRES_PYTHON"
+echo "  • Renamed directories to match new package name"
 echo ""
 echo "Next steps:"
-echo "  1. Review the changes made to your files"
+echo "  1. Review the changes made to your files and directories"
 echo "  2. Update any URLs, author information, and other project-specific details"
 echo "  3. Install dependencies: pip install -e .[dev]"
 echo "  4. Run tests: pytest"
