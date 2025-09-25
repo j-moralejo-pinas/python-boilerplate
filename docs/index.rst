@@ -12,7 +12,7 @@ Contents
    :caption: Getting Started
 
    Overview <README>
-   Installation & Quick Start <installation>
+   Installation <installation>
 
 .. toctree::
    :maxdepth: 2
@@ -27,6 +27,7 @@ Contents
    License <LICENSE>
    Authors <AUTHORS>
    Changelog <CHANGELOG>
+   Code of Conduct <CODE_OF_CONDUCT>
 
 .. toctree::
    :maxdepth: 2
@@ -34,10 +35,6 @@ Contents
 
    API Documentation <autoapi/index>
 
-Indices and tables
-==================
-
-- :ref:`modindex`
 
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html
 .. _reStructuredText: https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html

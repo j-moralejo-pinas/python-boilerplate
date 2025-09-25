@@ -8,7 +8,7 @@ This guide provides step-by-step instructions for installing and setting up the 
     :depth: 2
 
 Prerequisites
--------------
+=============
 
 Before installing the project, ensure you have the following requirements:
 
@@ -24,16 +24,16 @@ This section is for users who want to use the project template without modifying
 Quick Start
 -----------
 
-1. **Clone the Repository**
+1. **Clone the Repository**: Clone the project repository from GitHub
 
-    Clone the project repository from GitHub::
+    ::
 
         git clone https://github.com/j-moralejo-pinas/package-name.git
         cd package-name
 
-2. **Set Up Virtual Environment (Recommended)**
+2. **Set Up Virtual Environment (Recommended)**: While not mandatory, using a virtual environment is highly recommended to avoid dependency conflicts
 
-    While not mandatory, using a virtual environment is highly recommended to avoid dependency conflicts::
+    ::
 
         # Using conda (recommended)
         conda create -n env_config python=3.x
@@ -46,31 +46,31 @@ Quick Start
         # On Windows:
         venv\Scripts\activate
 
-3. **Install the Package**
+3. **Install the Package**: Install the project and its dependencies
 
-    Install the project and its dependencies::
+    ::
 
         pip install -e .
 
-4. **Verify Installation**
+4. **Verify Installation**: Test that the installation was successful
 
-    Test that the installation was successful::
+    ::
 
         python -c "import package_name; print('Installation successful!')"
 
 Docker Installation (Alternative)
-==================================
+---------------------------------
 
 If you prefer to use Docker instead of a local Python installation, you can run the project in a containerized environment.
 
 Prerequisites for Docker
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 * **Docker** and **Docker Compose** installed on your system
 * **Git** for cloning the repository
 
 Docker Setup
-------------
+~~~~~~~~~~~~
 
 1. **Clone the Repository**
 
@@ -79,17 +79,17 @@ Docker Setup
         git clone https://github.com/j-moralejo-pinas/package-name.git
         cd package-name
 
-2. **Build the Docker Image**
+2. **Build the Docker Image**: Build the application using Docker Compose
 
-    Build the application using Docker Compose::
+    ::
 
         docker-compose build
 
     This will create a Docker image with all necessary dependencies pre-installed.
 
-3. **Verify Docker Installation**
+3. **Verify Docker Installation**: Test that the Docker setup works
 
-    Test that the Docker setup works::
+    ::
 
         docker-compose run --rm app python -c "import package_name; print('Docker installation successful!')"
 
@@ -115,16 +115,16 @@ Development Setup
         git clone https://github.com/j-moralejo-pinas/package-name.git
         cd package-name
 
-2. **Set Up Development Environment**
+2. **Set Up Development Environment**: Create a virtual environment (recommended)
 
-    Create a virtual environment (recommended)::
+    ::
 
         conda create -n package-name-dev python=3.x
         conda activate package-name-dev
 
-3. **Install in Development Mode**
+3. **Install in Development Mode**: Install the package with development dependencies
 
-    Install the package with development dependencies::
+    ::
 
         pip install -e ".[dev,docs]"
 
@@ -141,15 +141,15 @@ Development Setup
    * ``sphinx`` - Documentation generation
    * ``sphinx-autoapi`` - Automatic API documentation generation
 
-4. **Set Up Pre-commit Hooks**
+4. **Set Up Pre-commit Hooks**: Install pre-commit hooks to ensure code quality
 
-    Install pre-commit hooks to ensure code quality::
+    ::
 
         pre-commit install
 
-5. **Configure Type Checking**
+5. **Configure Type Checking**: Link your development environment to Pyright for proper type checking. Create a ``pyrightconfig.local.json`` file in the project root
 
-    Link your development environment to Pyright for proper type checking. Create a ``pyrightconfig.local.json`` file in the project root::
+    ::
 
         {
             "venvPath": "/path/to/your/conda/envs",
@@ -158,17 +158,17 @@ Development Setup
 
     Replace ``/path/to/your/conda/envs`` with your actual conda environments path (e.g., ``/home/username/miniconda3/envs`` or ``/home/username/micromamba/envs``).
 
-6. **Configure Environment**
+6. **Configure Environment**: Set the ``PYTHONPATH`` environment variable
 
-    Set the ``PYTHONPATH`` environment variable::
+    ::
 
         export PYTHONPATH="${PWD}/src:${PYTHONPATH}"
 
     Or add this to your shell profile (``~/.bashrc``, ``~/.zshrc``, etc.).
 
-7. **Verify Installation**
+7. **Verify Installation**: Test that the development installation was successful
 
-    Test that the development installation was successful::
+    ::
 
         python -c "import package_name; print('Development installation successful!')"
         pytest --version

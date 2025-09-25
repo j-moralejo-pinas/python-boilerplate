@@ -25,7 +25,8 @@ A comprehensive boilerplate for Python projects with modern CI/CD setup, testing
     - ``TEST_PYPI_API_TOKEN``: Your Test PyPI token
 3. Modify the `.github/workflows/configure_repo.yml` file to set up the minimum (an maximum) python versions, and a list of topics
 4. Run the `configure_repo` workflow manually from the Actions tab
-5. Clone your repository and start coding!
+5. Set up read the docs to build documentation for this project
+6. Clone your repository and start coding!
 
 🎯 **Project Description**
 --------------------------
