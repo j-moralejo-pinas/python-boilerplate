@@ -26,14 +26,14 @@ Quick Start
 
 1. **Clone the Repository**: Clone the project repository from GitHub
 
-    ::
+    .. code-block::
 
         git clone https://github.com/j-moralejo-pinas/package-name.git
         cd package-name
 
 2. **Set Up Virtual Environment (Recommended)**: While not mandatory, using a virtual environment is highly recommended to avoid dependency conflicts
 
-    ::
+    .. code-block::
 
         # Using conda (recommended)
         conda create -n env_config python=3.x
@@ -48,13 +48,13 @@ Quick Start
 
 3. **Install the Package**: Install the project and its dependencies
 
-    ::
+    .. code-block::
 
         pip install -e .
 
 4. **Verify Installation**: Test that the installation was successful
 
-    ::
+    .. code-block::
 
         python -c "import package_name; print('Installation successful!')"
 
@@ -74,14 +74,14 @@ Docker Setup
 
 1. **Clone the Repository**
 
-    ::
+    .. code-block::
 
         git clone https://github.com/j-moralejo-pinas/package-name.git
         cd package-name
 
 2. **Build the Docker Image**: Build the application using Docker Compose
 
-    ::
+    .. code-block::
 
         docker-compose build
 
@@ -89,7 +89,7 @@ Docker Setup
 
 3. **Verify Docker Installation**: Test that the Docker setup works
 
-    ::
+    .. code-block::
 
         docker-compose run --rm app python -c "import package_name; print('Docker installation successful!')"
 
@@ -110,46 +110,46 @@ Development Setup
 
 1. **Clone and Navigate**
 
-    ::
+    .. code-block::
 
         git clone https://github.com/j-moralejo-pinas/package-name.git
         cd package-name
 
 2. **Set Up Development Environment**: Create a virtual environment (recommended)
 
-    ::
+    .. code-block::
 
         conda create -n package-name-dev python=3.x
         conda activate package-name-dev
 
 3. **Install in Development Mode**: Install the package with development dependencies
 
-    ::
+    .. code-block::
 
         pip install -e ".[dev,docs]"
 
     This installs the project in editable mode with all development tools including:
 
-   * ``pytest`` - Testing framework
-   * ``pyright`` - Type checking
-   * ``pre-commit`` - Git hooks for code quality
-   * ``ruff`` - Fast Python linter and formatter
-   * ``pydoclint`` - Documentation linting
-   * ``docformatter`` - Documentation formatting
-   * ``pytest-cov`` - Test coverage
-   * ``pyupgrade`` - Code modernization
-   * ``sphinx`` - Documentation generation
-   * ``sphinx-autoapi`` - Automatic API documentation generation
+    * ``pytest`` - Testing framework
+    * ``pyright`` - Type checking
+    * ``pre-commit`` - Git hooks for code quality
+    * ``ruff`` - Fast Python linter and formatter
+    * ``pydoclint`` - Documentation linting
+    * ``docformatter`` - Documentation formatting
+    * ``pytest-cov`` - Test coverage
+    * ``pyupgrade`` - Code modernization
+    * ``sphinx`` - Documentation generation
+    * ``sphinx-autoapi`` - Automatic API documentation generation
 
 4. **Set Up Pre-commit Hooks**: Install pre-commit hooks to ensure code quality
 
-    ::
+    .. code-block::
 
         pre-commit install
 
 5. **Configure Type Checking**: Link your development environment to Pyright for proper type checking. Create a ``pyrightconfig.local.json`` file in the project root
 
-    ::
+    .. code-block::
 
         {
             "venvPath": "/path/to/your/conda/envs",
@@ -160,7 +160,7 @@ Development Setup
 
 6. **Configure Environment**: Set the ``PYTHONPATH`` environment variable
 
-    ::
+    .. code-block::
 
         export PYTHONPATH="${PWD}/src:${PYTHONPATH}"
 
@@ -168,7 +168,7 @@ Development Setup
 
 7. **Verify Installation**: Test that the development installation was successful
 
-    ::
+    .. code-block::
 
         python -c "import package_name; print('Development installation successful!')"
         pytest --version
@@ -182,13 +182,17 @@ Troubleshooting
 
 **Import Errors**
 
-If you encounter import errors, ensure the ``PYTHONPATH`` is set correctly::
+If you encounter import errors, ensure the ``PYTHONPATH`` is set correctly
+
+.. code-block::
 
     export PYTHONPATH="${PWD}/src:${PYTHONPATH}"
 
 **Virtual Environment Issues**
 
-If you have issues with virtual environments, try::
+If you have issues with virtual environments, try
+
+.. code-block::
 
     # For conda environments
     conda info --envs  # List all environments
@@ -200,7 +204,9 @@ If you have issues with virtual environments, try::
 
 **Docker Issues**
 
-If Docker commands fail::
+If Docker commands fail
+
+.. code-block::
 
     # Check Docker is running
     docker --version
