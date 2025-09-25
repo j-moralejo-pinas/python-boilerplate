@@ -26,37 +26,37 @@ Quick Start
 
 1. **Clone the Repository**: Clone the project repository from GitHub
 
-    .. code-block::
+.. code-block::
 
-        git clone https://github.com/j-moralejo-pinas/package-name.git
-        cd package-name
+    git clone https://github.com/j-moralejo-pinas/package-name.git
+    cd package-name
 
 2. **Set Up Virtual Environment (Recommended)**: While not mandatory, using a virtual environment is highly recommended to avoid dependency conflicts
 
-    .. code-block::
+.. code-block::
 
-        # Using conda (recommended)
-        conda create -n env_config python=3.x
-        conda activate env_config
+    # Using conda (recommended)
+    conda create -n env_config python=3.x
+    conda activate env_config
 
-        # OR using venv
-        python -m venv venv
-        # On Linux/macOS:
-        source venv/bin/activate
-        # On Windows:
-        venv\Scripts\activate
+    # OR using venv
+    python -m venv venv
+    # On Linux/macOS:
+    source venv/bin/activate
+    # On Windows:
+    venv\Scripts\activate
 
 3. **Install the Package**: Install the project and its dependencies
 
-    .. code-block::
+.. code-block::
 
-        pip install -e .
+    pip install -e .
 
 4. **Verify Installation**: Test that the installation was successful
 
-    .. code-block::
+.. code-block::
 
-        python -c "import package_name; print('Installation successful!')"
+    python -c "import package_name; print('Installation successful!')"
 
 Docker Installation (Alternative)
 ---------------------------------
@@ -74,24 +74,22 @@ Docker Setup
 
 1. **Clone the Repository**
 
-    .. code-block::
+.. code-block::
 
-        git clone https://github.com/j-moralejo-pinas/package-name.git
-        cd package-name
+    git clone https://github.com/j-moralejo-pinas/package-name.git
+    cd package-name
 
-2. **Build the Docker Image**: Build the application using Docker Compose
+2. **Build the Docker Image**: Build the application using Docker Compose. This will create a Docker image with all necessary dependencies pre-installed
 
-    .. code-block::
+.. code-block::
 
-        docker-compose build
-
-    This will create a Docker image with all necessary dependencies pre-installed.
+    docker-compose build
 
 3. **Verify Docker Installation**: Test that the Docker setup works
 
-    .. code-block::
+.. code-block::
 
-        docker-compose run --rm app python -c "import package_name; print('Docker installation successful!')"
+    docker-compose run --rm app python -c "import package_name; print('Docker installation successful!')"
 
 **Docker Benefits**
 
@@ -110,24 +108,19 @@ Development Setup
 
 1. **Clone and Navigate**
 
-    .. code-block::
+.. code-block::
 
-        git clone https://github.com/j-moralejo-pinas/package-name.git
-        cd package-name
+    git clone https://github.com/j-moralejo-pinas/package-name.git
+    cd package-name
 
 2. **Set Up Development Environment**: Create a virtual environment (recommended)
 
-    .. code-block::
+.. code-block::
 
-        conda create -n package-name-dev python=3.x
-        conda activate package-name-dev
+    conda create -n package-name-dev python=3.x
+    conda activate package-name-dev
 
 3. **Install in Development Mode**: Install the package with development dependencies
-
-    .. code-block::
-
-        pip install -e ".[dev,docs]"
-
     This installs the project in editable mode with all development tools including:
 
     * ``pytest`` - Testing framework
@@ -141,39 +134,43 @@ Development Setup
     * ``sphinx`` - Documentation generation
     * ``sphinx-autoapi`` - Automatic API documentation generation
 
+.. code-block::
+
+    pip install -e ".[dev,docs]"
+
 4. **Set Up Pre-commit Hooks**: Install pre-commit hooks to ensure code quality
 
-    .. code-block::
+.. code-block::
 
-        pre-commit install
+    pre-commit install
 
 5. **Configure Type Checking**: Link your development environment to Pyright for proper type checking. Create a ``pyrightconfig.local.json`` file in the project root
 
-    .. code-block::
+.. code-block::
 
-        {
-            "venvPath": "/path/to/your/conda/envs",
-            "venv": "package-name-dev"
-        }
+    {
+        "venvPath": "/path/to/your/conda/envs",
+        "venv": "package-name-dev"
+    }
 
-    Replace ``/path/to/your/conda/envs`` with your actual conda environments path (e.g., ``/home/username/miniconda3/envs`` or ``/home/username/micromamba/envs``).
+.. [#f1] Replace ``/path/to/your/conda/envs`` with your actual conda environments path (e.g., ``/home/username/miniconda3/envs`` or ``/home/username/micromamba/envs``).
 
-6. **Configure Environment**: Set the ``PYTHONPATH`` environment variable
+6. **Configure Environment**: Set the ``PYTHONPATH`` environment variable or add it to your shell profile to include the source directory (``~/.bashrc``, ``~/.zshrc``, etc.)
 
-    .. code-block::
+.. code-block::
 
-        export PYTHONPATH="${PWD}/src:${PYTHONPATH}"
+    export PYTHONPATH="${PWD}/src:${PYTHONPATH}"
 
     Or add this to your shell profile (``~/.bashrc``, ``~/.zshrc``, etc.).
 
 7. **Verify Installation**: Test that the development installation was successful
 
-    .. code-block::
+.. code-block::
 
-        python -c "import package_name; print('Development installation successful!')"
-        pytest --version
-        ruff --version
-        pyright --version
+    python -c "import package_name; print('Development installation successful!')"
+    pytest --version
+    ruff --version
+    pyright --version
 
 Troubleshooting
 ===============
