@@ -21,7 +21,7 @@ jobs:
 
   call-reusable:
     needs: get-workflow-type
-    uses: j-moralejo-pinas/ci-cd-python-gitflow/.github/workflows/main_pr.yml@main
+    uses: j-moralejo-pinas/ci-cd-python/.github/workflows/main_pr.yml@main
     with:
       workflow_type: ${{ needs.get-workflow-type.outputs.workflow_type }}
     secrets: inherit
