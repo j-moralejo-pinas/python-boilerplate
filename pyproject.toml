@@ -125,3 +125,6 @@ close-quotes-on-newline = true
 [tool.vulture]
 # min_confidence = 80
 paths = ["src", "tests"]
+
+[tool.cicd]
+workflow = ""

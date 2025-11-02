@@ -9,6 +9,18 @@ permissions:
   contents: write
 
 jobs:
+  get-workflow-type:
+    runs-on: ubuntu-latest
+    outputs:
+      workflow_type: ${{ steps.get-workflow.outputs.workflow_type }}
+    steps:
+      - name: Get workflow type
+        id: get-workflow
+        uses: ./.github/actions/get-workflow-type
+
   call-reusable:
+    needs: get-workflow-type
     uses: j-moralejo-pinas/ci-cd-python-gitflow/.github/workflows/tag_on_merge.yml@main
+    with:
+      workflow_type: ${{ needs.get-workflow-type.outputs.workflow_type }}
     secrets: inherit

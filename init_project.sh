@@ -101,6 +101,31 @@ update_keywords() {
     fi
 }
 
+# Function to update workflow variable in pyproject.toml
+update_workflow_variable() {
+    local workflow_name="$1"
+
+    if [[ ! -f "pyproject.toml" ]]; then
+        echo "  ⚠ Warning: pyproject.toml not found"
+        return 0
+    fi
+
+    if [[ -z "$workflow_name" ]]; then
+        echo "  No workflow specified, keeping existing workflow value in pyproject.toml"
+        return 0
+    fi
+
+    echo "  Updating workflow variable in pyproject.toml: $workflow_name"
+
+    # Update the existing workflow variable in [tool.cicd] section
+    if grep -q "^workflow = " pyproject.toml; then
+        sed -i "s|^workflow = .*|workflow = \"$workflow_name\"|" pyproject.toml
+        echo "  ✓ Workflow variable updated to: $workflow_name"
+    else
+        echo "  ⚠ Warning: workflow variable not found in pyproject.toml"
+    fi
+}
+
 # Function to update workflow content in CONTRIBUTING.rst
 update_workflow_content() {
     local workflow_name="$1"
@@ -156,6 +181,9 @@ update_workflow_content() {
     else
         echo "  Keeping GitHub workflow files (needed for gitflow workflow)"
     fi
+
+    # Update workflow variable in pyproject.toml
+    update_workflow_variable "$workflow_name"
 
     echo "  ✓ Workflow content updated with $workflow_name workflow"
 }
