@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Script to initialize a Python project with custom parameters
-# Usage: ./init_project.sh "project-name" "Project description" "3.11" ["3.12"] ["topic1 topic2 topic3"]
+# Usage: ./init_project.sh "project-name" "Project description" "3.11" ["3.12"] ["topic1 topic2 topic3"] ["workflow"]
 
 set -e  # Exit on any error
 
 # Function to display usage
 usage() {
-    echo "Usage: $0 <project-name> <description> <min-python-version> [max-python-version] [keywords]"
+    echo "Usage: $0 <project-name> <description> <min-python-version> [max-python-version] [keywords] [workflow]"
     echo ""
     echo "Arguments:"
     echo "  project-name         : Name of the project (e.g., 'my-awesome-project')"
@@ -15,11 +15,13 @@ usage() {
     echo "  min-python-version   : Minimum Python version (e.g., '3.11')"
     echo "  max-python-version   : Optional maximum Python version (not included, e.g., '3.12')"
     echo "  keywords             : Optional space-separated list of keywords/topics (e.g., 'python automation testing')"
+    echo "  workflow             : Optional development workflow (e.g., 'gitflow', 'github_flow')"
     echo ""
     echo "Examples:"
     echo "  $0 'my-data-analyzer' 'A tool for analyzing data' '3.9'"
     echo "  $0 'web-scraper' 'A web scraping utility' '3.10' '3.12'"
     echo "  $0 'ml-toolkit' 'Machine learning toolkit' '3.11' '' 'machine-learning python ai'"
+    echo "  $0 'api-server' 'REST API server' '3.12' '' 'api server' 'gitflow'"
     exit 1
 }
 
@@ -70,18 +72,18 @@ rename_directories() {
 # Function to update keywords in pyproject.toml
 update_keywords() {
     local keywords_string="$1"
-    
+
     if [[ -z "$keywords_string" ]]; then
         echo "  No keywords provided, keeping existing keywords"
         return 0
     fi
-    
+
     echo "  Updating keywords with: $keywords_string"
-    
+
     # Convert space-separated keywords to TOML array format
     local keywords_array=""
     IFS=' ' read -ra KEYWORDS_ARRAY <<< "$keywords_string"
-    
+
     for i in "${!KEYWORDS_ARRAY[@]}"; do
         if [[ $i -eq 0 ]]; then
             keywords_array="\"${KEYWORDS_ARRAY[i]}\""
@@ -89,7 +91,7 @@ update_keywords() {
             keywords_array="$keywords_array, \"${KEYWORDS_ARRAY[i]}\""
         fi
     done
-    
+
     # Update keywords line in pyproject.toml
     if [[ -f "pyproject.toml" ]]; then
         sed -i "s|^keywords = \[.*\]|keywords = [$keywords_array]|" pyproject.toml
@@ -99,8 +101,67 @@ update_keywords() {
     fi
 }
 
+# Function to update workflow content in CONTRIBUTING.rst
+update_workflow_content() {
+    local workflow_name="$1"
+
+    if [[ -z "$workflow_name" ]]; then
+        echo "  No workflow specified, keeping existing workflow content"
+        return 0
+    fi
+
+    local workflow_file="dev_workflow_${workflow_name}.rst"
+
+    if [[ ! -f "$workflow_file" ]]; then
+        echo "  ⚠ Warning: Workflow file '$workflow_file' not found, keeping existing workflow content"
+        return 0
+    fi
+
+    if [[ ! -f "CONTRIBUTING.rst" ]]; then
+        echo "  ⚠ Warning: CONTRIBUTING.rst not found"
+        return 0
+    fi
+
+    echo "  Updating workflow content with: $workflow_name (from $workflow_file)"
+
+    # Use sed to replace the <dev_workflow> token with the file content
+    # This approach reads the workflow file directly and inserts it in place of the token
+    sed -e "/<dev_workflow>/ {
+        r $workflow_file
+        d
+    }" CONTRIBUTING.rst > CONTRIBUTING.rst.tmp
+
+    # Replace the original file
+    mv CONTRIBUTING.rst.tmp CONTRIBUTING.rst
+
+    # Clean up workflow files after successful integration
+    echo "  Cleaning up workflow files..."
+    for workflow_cleanup_file in dev_workflow_*.rst; do
+        if [[ -f "$workflow_cleanup_file" ]]; then
+            rm "$workflow_cleanup_file"
+            echo "    ✓ Removed $workflow_cleanup_file"
+        fi
+    done
+
+    # Clean up GitHub workflow files that are no longer needed (only if not using gitflow)
+    if [[ "$workflow_name" != "gitflow" ]]; then
+        echo "  Cleaning up GitHub workflow files (not needed for $workflow_name workflow)..."
+        workflow_files_to_remove=("dev_pr.yml" "sync_main_to_dev.yml")
+        for workflow_file in "${workflow_files_to_remove[@]}"; do
+            if [[ -f ".github/workflows/$workflow_file" ]]; then
+                rm ".github/workflows/$workflow_file"
+                echo "    ✓ Removed .github/workflows/$workflow_file"
+            fi
+        done
+    else
+        echo "  Keeping GitHub workflow files (needed for gitflow workflow)"
+    fi
+
+    echo "  ✓ Workflow content updated with $workflow_name workflow"
+}
+
 # Check arguments
-if [[ $# -lt 3 || $# -gt 5 ]]; then
+if [[ $# -lt 3 || $# -gt 6 ]]; then
     echo "Error: Invalid number of arguments"
     usage
 fi
@@ -110,6 +171,7 @@ DESCRIPTION="$2"
 MIN_PYTHON="$3"
 MAX_PYTHON="$4"
 KEYWORDS="$5"
+WORKFLOW="$6"
 
 # Validate project name
 if [[ ! "$PROJECT_NAME" =~ ^[a-zA-Z0-9_-]+$ ]]; then
@@ -138,6 +200,7 @@ echo "Description: $DESCRIPTION"
 echo "Min Python Version: $MIN_PYTHON"
 echo "Max Python Version: ${MAX_PYTHON:-'Not specified'}"
 echo "Keywords: ${KEYWORDS:-'Not specified'}"
+echo "Workflow: ${WORKFLOW:-'Not specified'}"
 echo ""
 
 # Step 1: Update pyproject.toml description
@@ -154,6 +217,11 @@ fi
 echo ""
 echo "Step 1b: Updating keywords in pyproject.toml..."
 update_keywords "$KEYWORDS"
+
+# Step 1c: Update workflow content in CONTRIBUTING.rst
+echo ""
+echo "Step 1c: Updating workflow content in CONTRIBUTING.rst..."
+update_workflow_content "$WORKFLOW"
 
 # Step 2: Replace Python version references
 echo ""
@@ -260,6 +328,7 @@ echo "  • Description: $DESCRIPTION"
 echo "  • Python version: $MIN_PYTHON$([ -n "$MAX_PYTHON" ] && echo " (max: $MAX_PYTHON)")"
 echo "  • requires-python: $REQUIRES_PYTHON"
 echo "  • Keywords: ${KEYWORDS:-'None specified'}"
+echo "  • Workflow: ${WORKFLOW:-'None specified'}"
 echo "  • Renamed directories to match new package name"
 echo ""
 echo "Next steps:"

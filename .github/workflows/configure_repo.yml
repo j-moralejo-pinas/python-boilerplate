@@ -16,6 +16,7 @@ jobs:
       PYTHON_VERSION: "3.13"
       PYTHON_VERSION_MAX: ""  # Optional maximum Python version (empty by default)
       REPO_TOPICS: "python automation"  # Space-separated topics
+      WORKFLOW: "gitflow"  # Development workflow: gitflow or github_flow
 
     steps:
       - uses: actions/checkout@v4
@@ -45,10 +46,11 @@ jobs:
           echo "Python version: $PYTHON_VERSION"
           echo "Python max version: ${PYTHON_VERSION_MAX:-'Not specified'}"
           echo "Topics: ${REPO_TOPICS:-'Not specified'}"
+          echo "Workflow: ${WORKFLOW:-'Not specified'}"
 
-          # Run the init_project.sh script with repo name, description, Python versions, and topics
+          # Run the init_project.sh script with repo name, description, Python versions, topics, and workflow
           chmod +x ./init_project.sh
-          ./init_project.sh "$REPO_NAME" "$REPO_DESC" "$PYTHON_VERSION" "$PYTHON_VERSION_MAX" "$REPO_TOPICS"
+          ./init_project.sh "$REPO_NAME" "$REPO_DESC" "$PYTHON_VERSION" "$PYTHON_VERSION_MAX" "$REPO_TOPICS" "$WORKFLOW"
 
           # Configure git
           git config user.name "github-actions[bot]"
