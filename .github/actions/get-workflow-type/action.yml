@@ -23,21 +23,21 @@ runs:
       shell: bash
       run: |
         PYPROJECT_PATH="${{ inputs.pyproject_path }}"
-        
+
         if [[ ! -f "$PYPROJECT_PATH" ]]; then
           echo "⚠ Warning: $PYPROJECT_PATH not found, defaulting to 'gitflow'"
           echo "workflow_type=gitflow" >> "$GITHUB_OUTPUT"
           exit 0
         fi
-        
+
         # Extract workflow value from [tool.cicd] section
         WORKFLOW_TYPE=$(grep -A 10 "^\[tool\.cicd\]" "$PYPROJECT_PATH" | grep "^workflow = " | sed 's/^workflow = "\([^"]*\)".*/\1/' | head -1)
-        
+
         # If workflow is empty or not found, default to gitflow
         if [[ -z "$WORKFLOW_TYPE" ]]; then
           echo "⚠ Warning: workflow not found in $PYPROJECT_PATH [tool.cicd] section, defaulting to 'gitflow'"
           WORKFLOW_TYPE="gitflow"
         fi
-        
+
         echo "✓ Found workflow type: $WORKFLOW_TYPE"
         echo "workflow_type=$WORKFLOW_TYPE" >> "$GITHUB_OUTPUT"

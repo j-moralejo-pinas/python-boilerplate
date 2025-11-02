@@ -1,6 +1,30 @@
 name: configure_repo
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      python_version:
+        description: 'Python version to use'
+        required: true
+        default: '3.13'
+        type: string
+      python_version_max:
+        description: 'Optional maximum Python version (leave empty if not needed)'
+        required: false
+        default: ''
+        type: string
+      repo_topics:
+        description: 'Space-separated repository topics'
+        required: false
+        default: 'python automation'
+        type: string
+      workflow:
+        description: 'Development workflow to use'
+        required: true
+        default: 'gitflow'
+        type: choice
+        options:
+          - gitflow
+          - github_flow
 
 permissions:
   contents: write  # Need write permission to commit and push changes
@@ -11,12 +35,6 @@ jobs:
     # Optional safety gate. Keep if you stored ADMIN_TOKEN in env "prod".
     environment: main
     runs-on: ubuntu-latest
-
-    env:
-      PYTHON_VERSION: "3.13"
-      PYTHON_VERSION_MAX: ""  # Optional maximum Python version (empty by default)
-      REPO_TOPICS: "python automation"  # Space-separated topics
-      WORKFLOW: "gitflow"  # Development workflow: gitflow or github_flow
 
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +51,10 @@ jobs:
         id: init
         env:
           GH_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+          PYTHON_VERSION: ${{ inputs.python_version }}
+          PYTHON_VERSION_MAX: ${{ inputs.python_version_max }}
+          REPO_TOPICS: ${{ inputs.repo_topics }}
+          WORKFLOW: ${{ inputs.workflow }}
         run: |
           set -euo pipefail
 
@@ -93,6 +115,7 @@ jobs:
       - name: Topics
         env:
           GH_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+          REPO_TOPICS: ${{ inputs.repo_topics }}
         run: |
           set -euo pipefail
           # Use REPO_SLUG from initialization step
