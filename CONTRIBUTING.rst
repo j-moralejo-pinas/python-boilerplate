@@ -1,11 +1,11 @@
-==============
+============
 Contributing
-==============
+============
 
 We welcome contributions to the package-name project! This guide will help you get started with contributing to the project.
 
-📋 **Table of Contents**
-========================
+📋 Table of Contents
+===================
 
 1. `Getting Started`_
 2. `Development Setup`_
@@ -84,7 +84,7 @@ Code Standards
 This project follows modern Python development practices:
 
 Code Modernization with Pyupgrade
-----------------------------------
+---------------------------------
 
 We use **pyupgrade** to automatically upgrade Python syntax to use modern features:
 
@@ -107,7 +107,7 @@ Pyupgrade automatically modernizes code by:
 - Removing unnecessary imports and comprehensions
 
 Docstring Formatting
----------------------
+--------------------
 
 We use **docformatter** to automatically format docstrings:
 
@@ -130,7 +130,7 @@ Docformatter ensures:
 - Removal of unnecessary blank lines in docstrings
 
 Code Formatting and Linting
-----------------------------
+---------------------------
 
 We use **Ruff** for both linting and formatting:
 

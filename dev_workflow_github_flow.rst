@@ -42,43 +42,43 @@ This project follows a structured GitHub-Flow branching model to maintain code q
 Branch Types
 ------------
 
-**main**
+main
 ~~~~~~~~
 - The production-ready branch
 - Contains stable, tested code
 - Protected branch requiring pull request reviews
 - Only accepts merges from ``feature``, ``hotfix``, ``bugfix``, ``fix``,  and ``meta`` branches
 
-**feature/* **
-~~~~~~~~~~~~~~
+feature/\*
+~~~~~~~~~~
 - Created for new features or enhancements
 - Branched from ``main``
 - Naming convention: ``feature/feature-name`` or ``feature/issue-number-description``
 - Merged back into ``main`` via pull request
 
-**bugfix/* or fix/* **
-~~~~~~~~~~~~~~~~~~~~~~
+bugfix/\* or fix/\*
+~~~~~~~~~~~~~~~~~~~
 - Created for non-urgent bug fixes
 - Branched from ``main``
 - Naming convention: ``bugfix/bug-description`` or ``bugfix/issue-number-description``
 - Merged back into ``main`` via pull request
 
-**hotfix/* **
-~~~~~~~~~~~~~
+hotfix/\*
+~~~~~~~~~
 - Created for urgent production fixes
 - Branched from ``main``
 - Naming convention: ``hotfix/critical-issue-description``
 - Merged back into ``main`` via pull request
 
-**major/* **
-~~~~~~~~~~~~
+major/\*
+~~~~~~~~
 - Created for major changes that may introduce breaking changes
 - Branched from ``main`` or a ``feature/`` branch that introduced breaking changes
 - Naming convention: ``major/feature-description``
 - Merged back into ``main`` via pull request
 
-**meta/* **
-~~~~~~~~~~~
+meta/\*
+~~~~~~~
 - Created for non-code changes (documentation, CI/CD, etc.)
 - Branched from ``main``
 - Naming convention: ``meta/change-description``
@@ -87,8 +87,8 @@ Branch Types
 Merge Workflows
 ---------------
 
-**Branch → Main**
-~~~~~~~~~~~~~~~~~
+Branch → Main
+~~~~~~~~~~~~~
 
 1. Merge ``main`` into your branch:
 
@@ -105,7 +105,7 @@ Merge Workflows
 Branch Protection Rules
 -----------------------
 
-- **main**: Requires pull request reviews, status checks must pass
+- ``main``: Requires pull request reviews, status checks must pass
 - Direct pushes to ``main`` are prohibited
 - All branches must be up-to-date before merging
 

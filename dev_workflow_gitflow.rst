@@ -2,7 +2,7 @@ Development Workflow
 ====================
 
 Creating a Feature Branch
---------------------------
+-------------------------
 
 1. Make sure you're on the dev branch and it's up to date:
 
@@ -42,50 +42,50 @@ This project follows a structured Gitflow branching model to maintain code quali
 Branch Types
 ------------
 
-**main**
-~~~~~~~~
+main
+~~~~
 - The production-ready branch
 - Contains stable, tested code
 - Protected branch requiring pull request reviews
 - Only accepts merges from ``dev`` or ``hotfix`` branches
 
-**dev**
-~~~~~~~
+dev
+~~~
 - The integration branch for ongoing development
 - Contains the latest development features
 - All feature and bugfix branches merge here first
 - Regularly merged into ``main`` when stable
 
-**feature/* **
-~~~~~~~~~~~~~~
+feature/\*
+~~~~~~~~~~
 - Created for new features or enhancements
 - Branched from ``dev``
 - Naming convention: ``feature/feature-name`` or ``feature/issue-number-description``
 - Merged back into ``dev`` via pull request
 
-**release/* **
-~~~~~~~~~~~~~~
+release/\*
+~~~~~~~~~~
 - Created for preparing a new production release
 - Branched from ``dev``
 - Naming convention: ``release/version-number``
 - Used for final testing and bug fixes before merging into ``main``
 
-**bugfix/* **
-~~~~~~~~~~~~~
+bugfix/\*
+~~~~~~~~~
 - Created for non-urgent bug fixes
 - Branched from ``dev``
 - Naming convention: ``bugfix/bug-description`` or ``bugfix/issue-number-description``
 - Merged back into ``dev`` via pull request
 
-**hotfix/* **
-~~~~~~~~~~~~~
+hotfix/\*
+~~~~~~~~~
 - Created for urgent production fixes
 - Branched from ``main``
 - Naming convention: ``hotfix/critical-issue-description``
 - Merged directly into ``main`` and then back-merged into ``dev``
 
-**meta/* **
-~~~~~~~~~~~
+meta/\*
+~~~~~~~
 - Created for non-code changes (documentation, CI/CD, etc.)
 - Branched from ``main``
 - Naming convention: ``meta/change-description``
@@ -94,8 +94,8 @@ Branch Types
 Merge Workflows
 ---------------
 
-**Feature/Bugfix → Dev**
-~~~~~~~~~~~~~~~~~~~~~~~~
+Feature/Bugfix → Dev
+~~~~~~~~~~~~~~~~~~~~
 
 1. Rebase ``dev`` into your feature/bugfix branch:
 
@@ -109,8 +109,8 @@ Merge Workflows
 3. Use **merge commit** or **squash and merge** to maintain clean commit history
 4. Delete the feature branch after successful merge
 
-**Dev → Release → Main**
-~~~~~~~~~~~~~~~~~~~~~~~~
+Dev → Release → Main
+~~~~~~~~~~~~~~~~~~~~
 
 1. When ready for a release, create a release branch from ``dev``:
 
@@ -126,8 +126,8 @@ Merge Workflows
 4. Use **squash commit** for a clean release commit
 5. After merge, CI pipeline will tag the release, publish packages, deploy documentation and merge ``main`` back into ``dev`` to keep branches synchronized
 
-**Hotfix → Main**
-~~~~~~~~~~~~~~~~~
+Hotfix → Main
+~~~~~~~~~~~~~
 
 1. Rebase ``main`` into your hotfix branch:
 
@@ -141,8 +141,8 @@ Merge Workflows
 3. Use **squash and merge** for clean hotfix commits
 4. After merge, CI pipeline will tag the hotfix release, publish packages, deploy documentation and merge ``main`` back into ``dev`` to keep branches synchronized
 
-**Meta → Main**
-~~~~~~~~~~~~~~~
+Meta → Main
+~~~~~~~~~~~
 
 1. Rebase ``main`` into your meta branch:
 
@@ -159,8 +159,8 @@ Merge Workflows
 Branch Protection Rules
 -----------------------
 
-- **main**: Requires pull request reviews, status checks must pass
-- **dev**: Requires pull request reviews, status checks must pass
+- ``main``: Requires pull request reviews, status checks must pass
+- ``dev``: Requires pull request reviews, status checks must pass
 - Direct pushes to ``main`` and ``dev`` are prohibited
 - All branches must be up-to-date before merging
 
