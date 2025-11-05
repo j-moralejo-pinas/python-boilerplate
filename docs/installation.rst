@@ -36,8 +36,8 @@ Quick Start
 .. code-block::
 
     # Using conda (recommended)
-    conda create -n env_config python=3.x
-    conda activate env_config
+    conda create -n package-name-env python=3.x
+    conda activate package-name-env
 
     # OR using venv
     python -m venv venv
