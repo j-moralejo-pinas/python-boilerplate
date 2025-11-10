@@ -346,6 +346,32 @@ if [[ -f "pyproject.toml" ]]; then
     echo "  ✓ setuptools_scm write_to path updated"
 fi
 
+# Step 8: Handle .vscode folder (add to gitignore and stop tracking)
+echo ""
+echo "Step 8: Handling .vscode folder..."
+
+if [[ -d ".vscode" ]]; then
+    # Stop tracking the .vscode folder if it's in git
+    if git ls-files --error-unmatch ".vscode" >/dev/null 2>&1; then
+        git rm --cached -r ".vscode"
+        echo "  ✓ Removed .vscode from git tracking"
+    else
+        echo "  ℹ .vscode is not currently tracked by git"
+    fi
+    
+    # Add .vscode to .gitignore if not already there
+    if [[ -f ".gitignore" ]]; then
+        if ! grep -q "^\.vscode" .gitignore; then
+            echo ".vscode/" >> .gitignore
+            echo "  ✓ Added .vscode/ to .gitignore"
+        else
+            echo "  ℹ .vscode/ already in .gitignore"
+        fi
+    fi
+else
+    echo "  ℹ .vscode folder does not exist"
+fi
+
 echo ""
 echo "=== Project Initialization Complete! ==="
 echo ""
