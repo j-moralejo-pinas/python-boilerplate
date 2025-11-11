@@ -126,6 +126,46 @@ update_workflow_variable() {
     fi
 }
 
+# Function to untrack file/folder from git and add to gitignore
+untrack_and_ignore() {
+    local path="$1"
+    local type="$2"  # "file" or "folder"
+
+    if [[ ! -e "$path" ]]; then
+        echo "  ℹ $type '$path' does not exist"
+        return 0
+    fi
+
+    # Stop tracking if it's in git
+    if git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
+        if [[ "$type" == "folder" ]]; then
+            git rm --cached -r "$path"
+        else
+            git rm --cached "$path"
+        fi
+        echo "  ✓ Removed $type '$path' from git tracking"
+    else
+        echo "  ℹ $type '$path' is not currently tracked by git"
+    fi
+
+    # Add to .gitignore if not already there
+    if [[ -f ".gitignore" ]]; then
+        # Escape dots in the path for grep
+        local escaped_path=$(echo "$path" | sed 's/\./\\./g')
+        if ! grep -q "^$escaped_path" .gitignore; then
+            # Add trailing slash for folders
+            if [[ "$type" == "folder" ]]; then
+                echo "$path/" >> .gitignore
+            else
+                echo "$path" >> .gitignore
+            fi
+            echo "  ✓ Added '$path' to .gitignore"
+        else
+            echo "  ℹ '$path' already in .gitignore"
+        fi
+    fi
+}
+
 # Function to update workflow content in CONTRIBUTING.rst
 update_workflow_content() {
     local workflow_name="$1"
@@ -346,31 +386,11 @@ if [[ -f "pyproject.toml" ]]; then
     echo "  ✓ setuptools_scm write_to path updated"
 fi
 
-# Step 8: Handle .vscode folder (add to gitignore and stop tracking)
+# Step 8: Handle .vscode and pyrightconfig.local.json
 echo ""
-echo "Step 8: Handling .vscode folder..."
-
-if [[ -d ".vscode" ]]; then
-    # Stop tracking the .vscode folder if it's in git
-    if git ls-files --error-unmatch ".vscode" >/dev/null 2>&1; then
-        git rm --cached -r ".vscode"
-        echo "  ✓ Removed .vscode from git tracking"
-    else
-        echo "  ℹ .vscode is not currently tracked by git"
-    fi
-    
-    # Add .vscode to .gitignore if not already there
-    if [[ -f ".gitignore" ]]; then
-        if ! grep -q "^\.vscode" .gitignore; then
-            echo ".vscode/" >> .gitignore
-            echo "  ✓ Added .vscode/ to .gitignore"
-        else
-            echo "  ℹ .vscode/ already in .gitignore"
-        fi
-    fi
-else
-    echo "  ℹ .vscode folder does not exist"
-fi
+echo "Step 8: Handling local configuration files..."
+untrack_and_ignore ".vscode" "folder"
+untrack_and_ignore "pyrightconfig.local.json" "file"
 
 echo ""
 echo "=== Project Initialization Complete! ==="
