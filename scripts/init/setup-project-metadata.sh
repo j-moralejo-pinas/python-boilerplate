@@ -208,18 +208,36 @@ update_workflow_content() {
         fi
     done
 
-    # Clean up GitHub workflow files that are no longer needed (only if not using gitflow)
+    # Clean up GitHub workflow files that are no longer needed
+    echo "  Cleaning up GitHub workflow files for $workflow_name workflow..."
+
+    workflow_files_to_remove=()
+
+    # If NOT gitflow, remove gitflow-specific files
     if [[ "$workflow_name" != "gitflow" ]]; then
-        echo "  Cleaning up GitHub workflow files (not needed for $workflow_name workflow)..."
-        workflow_files_to_remove=("dev_pr.yml" "sync_main_to_dev.yml")
+        workflow_files_to_remove+=("dev_pr.yml" "sync_main_to_dev.yml")
+    fi
+
+    # If NOT trunk, remove main_push.yml
+    if [[ "$workflow_name" != "trunk" ]]; then
+        workflow_files_to_remove+=("main_push.yml")
+    fi
+
+    # If trunk, also remove tag_on_merge.yml and main_pr.yml
+    if [[ "$workflow_name" == "trunk" ]]; then
+        workflow_files_to_remove+=("tag_on_merge.yml" "main_pr.yml")
+    fi
+
+    # Remove the files
+    if [[ ${#workflow_files_to_remove[@]} -eq 0 ]]; then
+        echo "    Keeping all workflow files"
+    else
         for workflow_file in "${workflow_files_to_remove[@]}"; do
             if [[ -f ".github/workflows/$workflow_file" ]]; then
                 rm ".github/workflows/$workflow_file"
                 echo "    ✓ Removed .github/workflows/$workflow_file"
             fi
         done
-    else
-        echo "  Keeping GitHub workflow files (needed for gitflow workflow)"
     fi
 
     # Update workflow variable in pyproject.toml
