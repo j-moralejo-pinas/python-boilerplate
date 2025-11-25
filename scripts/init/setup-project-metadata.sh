@@ -215,7 +215,7 @@ update_workflow_content() {
 
     # If NOT gitflow, remove gitflow-specific files
     if [[ "$workflow_name" != "gitflow" ]]; then
-        workflow_files_to_remove+=("dev_pr.yml" "sync_main_to_dev.yml")
+        workflow_files_to_remove+=("dev_pr.yml" "sync_main_to_dev.yml" "tag_on_merge.yml")
     fi
 
     # If NOT trunk, remove main_push.yml
@@ -225,7 +225,7 @@ update_workflow_content() {
 
     # If trunk, also remove tag_on_merge.yml and main_pr.yml
     if [[ "$workflow_name" == "trunk" ]]; then
-        workflow_files_to_remove+=("tag_on_merge.yml" "main_pr.yml")
+        workflow_files_to_remove+=("main_pr.yml")
     fi
 
     # Remove the files
