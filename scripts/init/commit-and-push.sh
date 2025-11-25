@@ -29,5 +29,12 @@ fi
 
 # Push to the specified branch
 echo "Pushing to branch '$BRANCH_NAME'..."
-git push origin "$BRANCH_NAME"
+# Check if branch exists upstream
+if git rev-parse --verify "origin/$BRANCH_NAME" >/dev/null 2>&1; then
+  # Branch exists upstream, push normally
+  git push origin "$BRANCH_NAME"
+else
+  # Branch doesn't exist upstream, push with -u to set upstream
+  git push -u origin "$BRANCH_NAME"
+fi
 echo "✓ Pushed to '$BRANCH_NAME'"

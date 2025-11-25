@@ -33,4 +33,6 @@ if [[ "$WORKFLOW" == "gitflow" ]]; then
   echo "Creating dev branch for gitflow workflow..."
   git checkout -b dev
   ./scripts/init/commit-and-push.sh "" "dev"
+  git checkout main
+  echo "✓ Dev branch created and pushed"
 fi
