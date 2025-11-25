@@ -67,6 +67,7 @@ rename_directories() {
             echo "    ⚠ Warning: Cannot rename $dir - $new_path already exists"
         fi
     done
+
 }
 
 # Function to update keywords in pyproject.toml
