@@ -27,3 +27,10 @@ chmod +x ./scripts/init/setup-project-metadata.sh
 # Commit and push changes
 chmod +x ./scripts/init/commit-and-push.sh
 ./scripts/init/commit-and-push.sh "Initialize project with name '$REPO_NAME' and Python $PYTHON_VERSION"
+
+# Create and push dev branch for gitflow workflow
+if [[ "$WORKFLOW" == "gitflow" ]]; then
+  echo "Creating dev branch for gitflow workflow..."
+  git checkout -b dev
+  ./scripts/init/commit-and-push.sh "" "dev"
+fi
