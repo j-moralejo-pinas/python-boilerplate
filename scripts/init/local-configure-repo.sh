@@ -69,12 +69,6 @@ chmod +x ./scripts/init/configure-project.sh
   "$REPO_TOPICS" \
   "$WORKFLOW"
 
-# Source the environment variables set by configure-project.sh
-# Note: In local environment, we need to source GITHUB_ENV manually
-if [ -f "$GITHUB_ENV" ]; then
-  source "$GITHUB_ENV"
-fi
-
 echo "✓ Step 1 complete"
 echo ""
 
