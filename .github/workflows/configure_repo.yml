@@ -74,7 +74,7 @@ jobs:
           GH_TOKEN: ${{ secrets.ADMIN_TOKEN }}
         run: |
           chmod +x ./scripts/init/setup-topics.sh
-          ./scripts/init/setup-topics.sh "$REPO_SLUG" "${{ inputs.repo_topics }}"
+          ./scripts/init/setup-topics.sh "$GITHUB_REPOSITORY" "${{ inputs.repo_topics }}"
 
       # 4) Workflow token permissions
       - name: Workflow permissions
@@ -82,7 +82,7 @@ jobs:
           GH_TOKEN: ${{ secrets.ADMIN_TOKEN }}
         run: |
           chmod +x ./scripts/init/setup-workflow-permissions.sh
-          ./scripts/init/setup-workflow-permissions.sh "$REPO_SLUG"
+          ./scripts/init/setup-workflow-permissions.sh "$GITHUB_REPOSITORY"
 
       # 5) Rulesets (correct schema). Never call /repos//rulesets again.
       - name: Create or update rulesets
@@ -90,4 +90,4 @@ jobs:
           GH_TOKEN: ${{ secrets.ADMIN_TOKEN }}
         run: |
           chmod +x ./scripts/init/setup-rulesets.sh
-          ./scripts/init/setup-rulesets.sh "$REPO_SLUG" "${{ inputs.workflow }}"
+          ./scripts/init/setup-rulesets.sh "$GITHUB_REPOSITORY" "${{ inputs.workflow }}"

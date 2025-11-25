@@ -82,21 +82,21 @@ echo ""
 # Step 3: Topics
 echo "Step 3: Set repository topics..."
 chmod +x ./scripts/init/setup-topics.sh
-./scripts/init/setup-topics.sh "$REPO_SLUG" "$REPO_TOPICS"
+./scripts/init/setup-topics.sh "$GITHUB_REPOSITORY" "$REPO_TOPICS"
 echo "✓ Step 3 complete"
 echo ""
 
 # Step 4: Workflow token permissions
 echo "Step 4: Set workflow token permissions..."
 chmod +x ./scripts/init/setup-workflow-permissions.sh
-./scripts/init/setup-workflow-permissions.sh "$REPO_SLUG"
+./scripts/init/setup-workflow-permissions.sh "$GITHUB_REPOSITORY"
 echo "✓ Step 4 complete"
 echo ""
 
 # Step 5: Create or update rulesets
 echo "Step 5: Create or update rulesets..."
 chmod +x ./scripts/init/setup-rulesets.sh
-./scripts/init/setup-rulesets.sh "$REPO_SLUG" "$WORKFLOW"
+./scripts/init/setup-rulesets.sh "$GITHUB_REPOSITORY" "$WORKFLOW"
 echo "✓ Step 5 complete"
 echo ""
 
