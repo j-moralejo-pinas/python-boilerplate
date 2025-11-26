@@ -3,7 +3,7 @@ package_name
 """
 
 try:
-    from ._version import version as __version__
+    from ._version import version as __version__  # pyright: ignore[reportMissingModuleSource]
 except ImportError:
     # 2) Fallback to installed package metadata
     try:
