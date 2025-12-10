@@ -224,11 +224,6 @@ update_workflow_content() {
         workflow_files_to_remove+=("main_push.yml")
     fi
 
-    # If trunk, also remove tag_on_merge.yml and main_pr.yml
-    if [[ "$workflow_name" == "trunk" ]]; then
-        workflow_files_to_remove+=("main_pr.yml")
-    fi
-
     # Remove the files
     if [[ ${#workflow_files_to_remove[@]} -eq 0 ]]; then
         echo "    Keeping all workflow files"
