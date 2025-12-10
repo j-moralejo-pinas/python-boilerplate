@@ -6,7 +6,7 @@
 set -euo pipefail
 
 REPO_SLUG="${1:?Repository slug is required}"
-WORKFLOW_TYPE="${2:?Workflow type is required (gitflow or github_flow)}"
+WORKFLOW_TYPE="${2:?Workflow type is required (gitflow, github_flow, or trunk)}"
 
 echo "Setting up rulesets for $REPO_SLUG with workflow type: $WORKFLOW_TYPE..."
 
@@ -40,9 +40,12 @@ replace_ruleset() {
       target: "branch",
       enforcement: "active",
       conditions: { ref_name: { include: [$branch], exclude: [] } },
-      rules: [
-        { "type": "deletion" },
-        {
+      rules: (
+        [
+          { "type": "deletion" },
+          { "type": "non_fast_forward" }
+        ] +
+        (if $allowed != null then [{
           "type": "pull_request",
           "parameters": {
             "dismiss_stale_reviews_on_push": true,
@@ -52,28 +55,28 @@ replace_ruleset() {
             "require_last_push_approval": false,
             "allowed_merge_methods": $allowed
           }
-        },
-        {
+        }] else [] end) +
+        (if ($checks | length) > 0 then [{
           "type": "required_status_checks",
           "parameters": {
             "do_not_enforce_on_create": false,
             "required_status_checks": $checks,
             "strict_required_status_checks_policy": true
           }
-        },
-        { "type": "non_fast_forward" }
-      ]
+        }] else [] end)
+      )
     }')
-
-  local ID
-  ID=$(find_ruleset_id_by_name "$NAME" || true)
-  if [ -n "${ID:-}" ]; then
-    gh api -i -X DELETE "/repos/$REPO_SLUG/rulesets/$ID" "${API[@]}" || true
-  fi
 
   gh api -i -X POST "/repos/$REPO_SLUG/rulesets" "${API[@]}" \
     --input <(printf '%s' "$BODY")
 }
+
+echo "Removing all existing rulesets..."
+gh api "/repos/$REPO_SLUG/rulesets" "${API[@]}" | jq -r '.[].id' | while read -r ID; do
+  if [ -n "$ID" ]; then
+    gh api -i -X DELETE "/repos/$REPO_SLUG/rulesets/$ID" "${API[@]}" || true
+  fi
+done
 
 if [[ "$WORKFLOW_TYPE" == "gitflow" ]]; then
   echo "Configuring rulesets for GitFlow workflow"
@@ -86,19 +89,19 @@ if [[ "$WORKFLOW_TYPE" == "gitflow" ]]; then
   replace_ruleset "Dev"  "dev"   "$(jq -n '["merge","squash"]')" \
     "call-reusable / format" "call-reusable / test"
 
-else
+elif [[ "$WORKFLOW_TYPE" == "github_flow" ]]; then
   echo "Configuring rulesets for GitHub Flow workflow"
 
-  # Main: Allow all merge types, checks: check-source-branch, format, code-quality, test
+  # Main: Merge + Squash + Rebase, checks: check-source-branch, format, code-quality, test
   replace_ruleset "Main" "main"  "$(jq -n '["merge","squash","rebase"]')" \
     "call-reusable / check-source-branch" "call-reusable / format" "call-reusable / code-quality" "call-reusable / test"
 
-  # Remove any existing Dev ruleset since it's not needed for GitHub Flow
-  DEV_RULESET_ID=$(find_ruleset_id_by_name "Dev" || true)
-  if [ -n "${DEV_RULESET_ID:-}" ]; then
-    echo "Removing Dev ruleset (not needed for GitHub Flow)"
-    gh api -i -X DELETE "/repos/$REPO_SLUG/rulesets/$DEV_RULESET_ID" "${API[@]}" || true
-  fi
+elif [[ "$WORKFLOW_TYPE" == "trunk" ]]; then
+  echo "Configuring rulesets for Trunk-based workflow"
+
+  # Main: Minimal protection - no PR required, no status checks required
+  replace_ruleset "Main" "main" "null"
+
 fi
 
 echo "✓ Rulesets configured"
