@@ -126,5 +126,8 @@ close-quotes-on-newline = true
 # min_confidence = 80
 paths = ["src", "tests"]
 
+[tool.bandit]
+skips = ["B101"]
+
 [tool.cicd]
 workflow = ""
