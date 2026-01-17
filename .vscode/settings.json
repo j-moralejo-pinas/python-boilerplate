@@ -1,7 +1,9 @@
 {
-    "terminal.integrated.env.linux": {"PYTHONPATH": "${workspaceFolder}/src"},
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+    },
     "python.analysis.autoImportCompletions": true,
-    "python.defaultInterpreterPath": "/home/user_name/micromamba/envs/env_name/bin/python",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "cSpell.language": "en,es",
     "cSpell.dictionaries": [
         "css",
@@ -20,11 +22,9 @@
     "python.autoComplete.extraPaths": [
         "src"
     ],
-    "cSpell.words": [
-    ],
+    "cSpell.words": [],
     "cSpell.caseSensitive": false,
-    "cSpell.ignoreWords": [
-    ],
+    "cSpell.ignoreWords": [],
     "github.copilot.chat.codesearch.enabled": true,
     "accessibility.voice.autoSynthesize": "off",
     "accessibility.voice.keywordActivation": "chatInView",
@@ -46,4 +46,5 @@
         "tests"
     ],
     "python.testing.unittestEnabled": false,
+    "python-envs.pythonProjects": [],
 }

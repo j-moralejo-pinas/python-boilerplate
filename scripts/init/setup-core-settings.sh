@@ -6,8 +6,6 @@ set -euo pipefail
 
 REPO_SLUG="${1:?Repository slug is required}"
 
-echo "Setting up core repository settings for $REPO_SLUG..."
-
 BODY=$(jq -n \
   '{has_wiki:false,
     allow_auto_merge:true,

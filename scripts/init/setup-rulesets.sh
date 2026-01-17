@@ -8,8 +8,6 @@ set -euo pipefail
 REPO_SLUG="${1:?Repository slug is required}"
 WORKFLOW_TYPE="${2:?Workflow type is required (gitflow, github_flow, or trunk)}"
 
-echo "Setting up rulesets for $REPO_SLUG with workflow type: $WORKFLOW_TYPE..."
-
 API=(-H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
 
 find_ruleset_id_by_name() {
@@ -71,7 +69,6 @@ replace_ruleset() {
     --input <(printf '%s' "$BODY")
 }
 
-echo "Removing all existing rulesets..."
 gh api "/repos/$REPO_SLUG/rulesets" "${API[@]}" | jq -r '.[].id' | while read -r ID; do
   if [ -n "$ID" ]; then
     gh api -i -X DELETE "/repos/$REPO_SLUG/rulesets/$ID" "${API[@]}" || true
@@ -79,8 +76,6 @@ gh api "/repos/$REPO_SLUG/rulesets" "${API[@]}" | jq -r '.[].id' | while read -r
 done
 
 if [[ "$WORKFLOW_TYPE" == "gitflow" ]]; then
-  echo "Configuring rulesets for GitFlow workflow"
-
   # Main: Merge only, checks: check-source-branch, format, code-quality, test
   replace_ruleset "Main" "main"  "$(jq -n '["merge"]')" \
     "call-reusable / check-source-branch" "call-reusable / format" "call-reusable / code-quality" "call-reusable / test"
@@ -90,15 +85,11 @@ if [[ "$WORKFLOW_TYPE" == "gitflow" ]]; then
     "call-reusable / format" "call-reusable / test"
 
 elif [[ "$WORKFLOW_TYPE" == "github_flow" ]]; then
-  echo "Configuring rulesets for GitHub Flow workflow"
-
   # Main: Merge + Squash + Rebase, checks: check-source-branch, format, code-quality, test
   replace_ruleset "Main" "main"  "$(jq -n '["merge","squash","rebase"]')" \
     "call-reusable / check-source-branch" "call-reusable / format" "call-reusable / code-quality" "call-reusable / test"
 
 elif [[ "$WORKFLOW_TYPE" == "trunk" ]]; then
-  echo "Configuring rulesets for Trunk-based workflow"
-
   # Main: Minimal protection - no PR required, no status checks required
   replace_ruleset "Main" "main" "null"
 

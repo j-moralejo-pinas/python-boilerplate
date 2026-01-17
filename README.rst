@@ -53,6 +53,7 @@ Developer Experience
 
 Quick Start
 -----------
+0. Fork this repository to your GitHub account if you haven't already, and use it to create a new repository as the base for your project.
 1. Create an environment in github called `main` and set the following features:
     - Required reviewers: my-name
     - Allow admins to bypass: disabled
@@ -66,7 +67,7 @@ Quick Start
 3. Modify the `.github/workflows/configure_repo.yml` file to set up the minimum (an maximum) python versions, and a list of topics
 4. Run the `configure_repo` workflow manually from the Actions tab
 5. Set up read the docs to build documentation for this project
-6. Clone your repository and start coding!
+6. Clone your repository locally
 
 📚 Documentation
 ---------------

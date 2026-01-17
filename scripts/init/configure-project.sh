@@ -9,16 +9,9 @@ PYTHON_VERSION_MAX="${2:-}"
 REPO_TOPICS="${3:-}"
 WORKFLOW="${4:?Workflow is required}"
 
-echo "Configuring project..."
-
 # Get repository info using the dedicated script
 chmod +x ./scripts/init/get-repo-info.sh
 source ./scripts/init/get-repo-info.sh
-
-echo "Python version: $PYTHON_VERSION"
-echo "Python max version: ${PYTHON_VERSION_MAX:-'Not specified'}"
-echo "Topics: ${REPO_TOPICS:-'Not specified'}"
-echo "Workflow: ${WORKFLOW:-'Not specified'}"
 
 # Initialize project metadata
 chmod +x ./scripts/init/setup-project-metadata.sh

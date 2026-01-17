@@ -26,55 +26,83 @@ Prerequisites
 
 - Python 3.x
 - Git
-- Docker (optional, for containerized development)
-- Conda or similar environment manager (recommended)
+- Docker (optional, for containerized deployment)
+- Nix or NixOS (optional, for Nix-based environment management)
 
-Fork and Clone
---------------
+Installation
+------------
 
-1. Fork the repository on GitHub
-2. Clone your fork locally:
+1. Clone the repository to your local machine:
 
 .. code-block:: bash
 
     git clone https://github.com/j-moralejo-pinas/package-name.git
     cd package-name
 
+2. Install all system dependencies or, optionally, if you are using Nix or NixOS, activate the Nix shell:
+
+.. code-block:: bash
+
+    nix develop
+
+3. Create and activate a virtual environment. You can use uv for this:
+
+.. code-block:: bash
+
+    uv venv
+    source .venv/bin/activate
+
+4. Install the package using your preferred method (e.g., pip, poetry, uv, etc.).
+
+.. code-block:: bash
+
+    uv pip install -e .
+
 Development Setup
 =================
 
-Environment Setup
------------------
+Prerequisites
+-------------
 
-1. Create a conda environment (recommended):
+- Git or GitHub CLI installed
+- NixOS or Nix package manager
+- direnv and nix-direnv for environment management
+
+Forking the Repository (Optional)
+---------------------------------
+
+1. Fork the repository on GitHub to your own account.
+2. Edit the CODEOWNERS file to add yourself as a maintainer.
+3. Create an environment in github called `main` and set the following features:
+    - Required reviewers: my-name
+    - Allow admins to bypass: disabled
+    - Deployment branches and tags: main
+    - Environment secrets:
+        - ``ADMIN_TOKEN``: Administration and actions (read and write)
+4. Set the following secrets in your repository settings:
+    - ``PAT_TOKEN``: Content and Pull Requests (read and write)
+    - ``PYPI_API_TOKEN``: Your PyPI token
+    - ``TEST_PYPI_API_TOKEN``: Your Test PyPI token
+5. Modify the `.github/workflows/configure_repo.yml` file to set up the minimum (an maximum) python versions, and a list of topics
+6. Run the `configure_repo` workflow manually from the Actions tab
+7. Set up read the docs to build documentation for this project
+
+Development Environment Setup
+-----------------------------
+
+To set up the development environment, run:
 
 .. code-block:: bash
 
-    conda create -n package-name python=3.x
-    conda activate package-name
+    git clone https://github.com/j-moralejo-pinas/package-name.git && cd package-name && chmod +x setup-dev.sh && ./setup-dev.sh
 
-2. Install the package in development mode:
+This will:
 
-.. code-block:: bash
-
-    pip install -e .[dev,docs]
-
-This will install:
-
-- All runtime dependencies
-- Development tools (pytest, ruff, pre-commit, etc.)
-- Documentation tools (sphinx, sphinx-autoapi)
-
-Pre-commit Hooks
-----------------
-
-Set up pre-commit hooks to ensure code quality:
-
-.. code-block:: bash
-
-    pre-commit install
-
-This will automatically run code formatting and linting before each commit.
+- Install all runtime dependencies including system and Python packages
+- Install development tools (pytest, ruff, pre-commit, etc.)
+- Install documentation tools (sphinx, sphinx-autoapi)
+- Set up direnv to automatically activate the environment when you enter the project directory
+- Set upd pre-commit hooks for code quality checks
 
 <dev_workflow>
 
@@ -180,17 +208,6 @@ We use **Pyright** for static type checking:
 
 Pyright is configured in ``pyrightconfig.json`` and helps catch type-related errors before runtime.
 
-**Important**: You should link your conda environment path in ``pyrightconfig.local.json`` for proper type checking. Create this file if it doesn't exist:
-
-.. code-block:: json
-
-    {
-        "venvPath": "/path/to/your/conda/envs",
-        "venv": "package-name"
-    }
-
-Replace ``/path/to/your/conda/envs`` with your actual conda environments path (e.g., ``/home/username/miniconda3/envs`` or ``/home/username/micromamba/envs``).
-
 Make sure your code passes type checking before submitting a pull request.
 
 Pre-commit Hooks
@@ -211,14 +228,6 @@ We use **pre-commit** to automatically run all code quality checks before each c
 
     # Update pre-commit hooks to latest versions
     pre-commit autoupdate
-
-Pre-commit automatically runs the following tools on your code:
-
-- **pyupgrade**: Modernizes Python syntax
-- **docformatter**: Formats docstrings consistently
-- **ruff**: Lints and formats code
-- **pydoclint**: Checks docstring quality
-- **pyright**: Performs type checking
 
 **Configuration**: You can customize which tools run by editing ``.pre-commit-config.yaml``:
 
@@ -248,17 +257,17 @@ Example of well-formatted code:
 
     from package_name import fun
 
-    def calculate_statistics(data: List[float]) -> Dict[str, float]:
+    def calculate_statistics(data: list[float]) -> dict[str, float]:
         """Calculate basic statistics for a list of numbers.
 
         Parameters
         ----------
-        data : List[float]
+        data : list[float]
             List of numerical values.
 
         Returns
         -------
-        Dict[str, float]
+        dict[str, float]
             Dictionary containing mean, median, and standard deviation.
         """
         if not data:
@@ -295,6 +304,7 @@ Running Tests
 Writing Tests
 -------------
 
+- Tests should be written when adding new features or fixing bugs
 - Place tests in the ``tests/`` directory, mirroring the ``src/`` structure
 - Test file names should start with ``test_``
 - Test function names should start with ``test_``
@@ -344,80 +354,6 @@ Writing Documentation
 - Keep documentation up to date with code changes
 - Documentation links should be relative and use the GitHub format (e.g., `Name <NAME.rst>`_)
 
-Submitting Changes
-==================
-
-Pull Request Process
---------------------
-
-1. Rebase your feature branch on the latest dev branch:
-
-.. code-block:: bash
-
-    # Fetch the latest changes from upstream
-    git fetch origin
-
-    # Rebase your feature branch on dev
-    git rebase origin/dev
-
-    # If there are conflicts, resolve them and continue
-    git add .
-    git rebase --continue
-
-2. Ensure your code passes all tests and linting:
-
-.. code-block:: bash
-
-    # Run the full test suite
-    pytest
-
-    # Run all pre-commit hooks (formatting, linting, type checking, etc.)
-    pre-commit run --all-files
-
-3. Commit your changes with descriptive commit messages:
-
-.. code-block:: bash
-
-    git add .
-    git commit -m "feat: add new feature
-
-    - Implement new feature
-    - Add comprehensive tests for edge cases
-    - Update documentation with usage examples"
-
-4. Push to your fork:
-
-.. code-block:: bash
-
-    git push origin feature/your-feature-name
-
-5. Create a pull request to dev on GitHub with:
-
-- Reference to any related issues
-- Screenshots or examples if applicable
-- Clear description of changes in the PR body in the following format [#format]_:
-
-.. code-block:: bash
-
-    - Added: New features or modules
-    - Changed: Modifications to existing functionality
-    - Fixed: Bug fixes
-
-.. [#format] PR body format is important for automatic changelog generation.
-
-Commit Message Format
----------------------
-
-Use conventional commit format:
-
-- ``feat:``: New features
-- ``fix:``: Bug fixes
-- ``docs:``: Documentation changes
-- ``style:``: Code style changes (formatting, etc.)
-- ``refactor:``: Code refactoring
-- ``test:``: Adding or updating tests
-- ``chore:``: Maintenance tasks
-
 Project Structure
 =================
 
@@ -426,12 +362,24 @@ Understanding the codebase structure will help you contribute effectively:
 .. code-block::
 
     package-name/
+    ├── .direnv/                    # Nix environment
+    ├── .github/workflows/          # GitHub Actions workflows
+    ├── .venv/                      # PythonVirtual environment
+    ├── .vscode/                    # VS Code settings
+    ├── docs/                       # Documentation
     ├── src/                        # Source code
     │   ├── package_name/           # Main package
     │   └── other_package/          # Additional package
     ├── tests/                      # Test suite
-    ├── docs/                       # Documentation
-    └── pyproject.toml              # Project configuration
+    ├── .envrc                      # direnv configuration
+    ├── .gitignore                  # Files that Git won't track
+    ├── .pre-commit-config.yaml     # Pre-commit hooks configuration
+    ├── .readthedocs.yml            # Read the Docs configuration
+    ├── cliff.toml                  # Config for git-cliff changelog generation
+    ├── flake.nix                   # Nix flake configuration with system dependencies
+    ├── pyproject.toml              # Project configuration
+    └── pyrightconfig.json          # Type checking configuration
+
 
 Getting Help
 ============

@@ -122,8 +122,8 @@ Dev → Release → Main
     git push origin release/x.y.z
 
 2. Perform final testing and bug fixes on the release branch
-3. Create a pull request from ``release/x.y.z`` to ``main``
-4. Use **squash commit** for a clean release commit
+3. Create a pull request from ``release/x.y.z`` or ``release/branch-name`` to ``main``
+4. Use **squash and merge** for a clean release commit
 5. After merge, CI pipeline will tag the release, publish packages, deploy documentation and merge ``main`` back into ``dev`` to keep branches synchronized
 
 Hotfix → Main
@@ -195,3 +195,73 @@ Workflow Examples
 
     # Resolve conflicts if any, then force push
     git push --force-with-lease origin feature/your-feature-name
+
+Submitting Changes
+==================
+
+Pull Request Process
+--------------------
+
+1. Rebase your feature branch on the latest dev branch:
+
+.. code-block:: bash
+
+    # Fetch the latest changes from upstream
+    git fetch origin
+
+    # Rebase your feature branch on dev
+    git rebase origin/dev
+
+    # If there are conflicts, resolve them and continue
+    git add .
+    git rebase --continue
+
+2. Ensure your code passes all tests and linting:
+
+.. code-block:: bash
+
+    # Run the full test suite
+    pytest
+
+    # Run all pre-commit hooks (formatting, linting, type checking, etc.)
+    pre-commit run --all-files
+
+3. Commit your changes with descriptive commit messages (https://www.conventionalcommits.org/en/v1.0.0/):
+
+.. code-block:: bash
+
+    git add .
+    git commit -m "feat: add new feature"
+
+4. Push to your fork:
+
+.. code-block:: bash
+
+    git push origin feature/your-feature-name
+
+5. Create a pull request to dev on GitHub with:
+
+- Reference to any related issues
+- Screenshots or examples if applicable
+- Clear description of changes in the PR body in the following format [#format]_:
+
+.. code-block:: bash
+
+    - Added: New features or modules
+    - Changed: Modifications to existing functionality
+    - Fixed: Bug fixes
+
+.. [#format] PR body format is important for automatic changelog generation.
+
+Commit Message Format
+---------------------
+
+Use conventional commit format:
+
+- ``feat:``: New features
+- ``fix:``: Bug fixes
+- ``docs:``: Documentation changes
+- ``style:``: Code style changes (formatting, etc.)
+- ``refactor:``: Code refactoring
+- ``test:``: Adding or updating tests
+- ``chore:``: Maintenance tasks

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Local script to configure repository (mirrors GitHub Actions workflow)
 # Usage: local-configure-repo.sh <python_version> [python_version_max] [repo_topics] [workflow]
-# 
+#
 # Prerequisites:
 #   - gh CLI is installed and authenticated
 #   - You are in the git project root directory
@@ -38,6 +38,19 @@ echo "Workflow: $WORKFLOW"
 echo "=========================================="
 echo ""
 
+# Check if direnv, and nix are available
+if ! command -v direnv >/dev/null; then
+  echo "Error: direnv is not installed or not in PATH"
+  exit 1
+fi
+if ! command -v nix >/dev/null; then
+  echo "Error: nix is not installed or not in PATH"
+  exit 1
+fi
+
+# Allow direnv to load .envrc files
+direnv allow .
+
 # Check if gh is available
 if ! command -v gh >/dev/null; then
   echo "Error: gh CLI is not installed or not in PATH"
@@ -54,7 +67,6 @@ echo "✓ gh CLI is authenticated"
 echo ""
 
 # Ensure dependencies
-echo "Ensuring dependencies..."
 chmod +x ./scripts/init/ensure-dependencies.sh
 ./scripts/init/ensure-dependencies.sh
 echo ""
@@ -98,6 +110,13 @@ echo "Step 5: Create or update rulesets..."
 chmod +x ./scripts/init/setup-rulesets.sh
 ./scripts/init/setup-rulesets.sh "$GITHUB_REPOSITORY" "$WORKFLOW"
 echo "✓ Step 5 complete"
+echo ""
+
+# Step 6: Create venv with uv and install optional dependencies
+echo "Step 6: Create virtual environment and install optional dependencies..."
+chmod +x ./scripts/init/setup-venv.sh
+./scripts/init/setup-venv.sh
+echo "✓ Step 6 complete"
 echo ""
 
 echo "=========================================="
