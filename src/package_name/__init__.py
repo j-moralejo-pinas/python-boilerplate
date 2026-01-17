@@ -1,6 +1,4 @@
-"""
-package_name
-"""
+"""package_name."""
 
 try:
     from ._version import version as __version__  # pyright: ignore[reportMissingModuleSource]
