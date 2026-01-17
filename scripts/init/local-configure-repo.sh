@@ -59,7 +59,7 @@ fi
 
 # Check if gh is authenticated
 if ! gh auth status >/dev/null 2>&1; then
-  echo "Error: gh CLI is not authenticated. Please run 'gh auth login' first"
+  echo "Error: gh Cj-moralejo-pinas/asdfLI is not authenticated. Please run 'gh auth login' first"
   exit 1
 fi
 
@@ -67,9 +67,9 @@ echo "✓ gh CLI is authenticated"
 echo ""
 
 # Ensure dependencies
-chmod +x ./scripts/init/ensure-dependencies.sh
-./scripts/init/ensure-dependencies.sh
-echo ""
+# chmod +x ./scripts/init/ensure-dependencies.sh
+# ./scripts/init/ensure-dependencies.sh
+# echo ""
 
 # Step 1: Get current repo info and initialize project
 echo "Step 1: Get repo info and initialize project..."
