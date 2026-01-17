@@ -14,6 +14,6 @@ BODY=$(jq -n \
 
 gh api --method PATCH -H "Accept: application/vnd.github+json" \
   "/repos/$REPO_SLUG" \
-  --input <(printf '%s' "$BODY")
+  --input <(printf '%s' "$BODY") > /dev/null
 
 echo "✓ Core settings updated"

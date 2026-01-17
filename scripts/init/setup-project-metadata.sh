@@ -140,9 +140,9 @@ untrack_and_ignore() {
     # Stop tracking if it's in git
     if git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
         if [[ "$type" == "folder" ]]; then
-            git rm --cached -r "$path"
+            git rm -q --cached -r "$path"
         else
-            git rm --cached "$path"
+            git rm -q --cached "$path"
         fi
         echo "  ✓ Removed $type '$path' from git tracking"
     else

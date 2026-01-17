@@ -65,13 +65,13 @@ replace_ruleset() {
       )
     }')
 
-  gh api -i -X POST "/repos/$REPO_SLUG/rulesets" "${API[@]}" \
-    --input <(printf '%s' "$BODY")
+  gh api -X POST "/repos/$REPO_SLUG/rulesets" "${API[@]}" \
+    --input <(printf '%s' "$BODY") > /dev/null
 }
 
 gh api "/repos/$REPO_SLUG/rulesets" "${API[@]}" | jq -r '.[].id' | while read -r ID; do
   if [ -n "$ID" ]; then
-    gh api -i -X DELETE "/repos/$REPO_SLUG/rulesets/$ID" "${API[@]}" || true
+    gh api -X DELETE "/repos/$REPO_SLUG/rulesets/$ID" "${API[@]}" > /dev/null || true
   fi
 done
 
