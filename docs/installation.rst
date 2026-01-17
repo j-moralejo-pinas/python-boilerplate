@@ -144,7 +144,7 @@ Development Setup
 
     pre-commit install
 
-5. **Configure Type Checking**: Link your development environment to Pyright for proper type checking. Create a ``pyrightconfig.local.json`` file in the project root
+5. **Configure Type Checking**: Link your development environment to Pyright for proper type checking.
 
 .. code-block::
 

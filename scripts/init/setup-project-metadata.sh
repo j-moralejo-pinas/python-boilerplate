@@ -400,11 +400,10 @@ if [[ -f "pyproject.toml" ]]; then
     echo "  ✓ setuptools_scm write_to path updated"
 fi
 
-# Step 8: Handle .vscode and pyrightconfig.local.json
+# Step 8: Handle .vscode
 echo ""
 echo "Step 8: Handling local configuration files..."
 untrack_and_ignore ".vscode" "folder"
-untrack_and_ignore "pyrightconfig.local.json" "file"
 
 echo ""
 echo "=== Project Initialization Complete! ==="

@@ -50,6 +50,7 @@ fi
 
 # Allow direnv to load .envrc files
 direnv allow .
+eval "$(direnv export bash)"
 
 # Check if gh is available
 if ! command -v gh >/dev/null; then
