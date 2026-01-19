@@ -28,7 +28,7 @@ uv pip install -e ".[dev,docs]"
 # Set up pre-commit hooks
 if command -v pre-commit >/dev/null; then
     echo "Setting up pre-commit hooks..."
-    pre-commit autoupdate
+    # pre-commit autoupdate # We shouldn't use unlocked versions in the boilerplate
     pre-commit install
 else
     echo "Error: pre-commit not found. This should not happen."
