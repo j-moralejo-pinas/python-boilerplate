@@ -64,6 +64,16 @@ if ! gh auth status >/dev/null 2>&1; then
   exit 1
 fi
 
+# Check if git user and email are set
+if ! git config user.name >/dev/null; then
+  echo "Error: git user.name is not set. Please run 'git config --global user.name \"Your Name\"'"
+  exit 1
+fi
+if ! git config user.email >/dev/null; then
+  echo "Error: git user.email is not set. Please run 'git config --global user.email \"you@example.com\"'"
+  exit 1
+fi
+
 echo "✓ gh CLI is authenticated"
 echo ""
 

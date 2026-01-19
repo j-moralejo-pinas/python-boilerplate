@@ -12,8 +12,12 @@ COMMIT_MESSAGE="${1:-}"
 BRANCH_NAME="${2:-$(git branch --show-current)}"
 
 echo "Configuring git..."
-git config user.name "github-actions[bot]"
-git config user.email "github-actions[bot]@users.noreply.github.com"
+if ! git config user.name >/dev/null; then
+  git config user.name "github-actions[bot]"
+fi
+if ! git config user.email >/dev/null; then
+  git config user.email "github-actions[bot]@users.noreply.github.com"
+fi
 
 # Commit changes if message is provided
 if [[ -n "$COMMIT_MESSAGE" ]]; then
