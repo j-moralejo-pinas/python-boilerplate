@@ -9,5 +9,5 @@
     "src"
   ],
   "venvPath": ".",
-  "venv": ".venv",
+  "venv": ".venv"
 }
