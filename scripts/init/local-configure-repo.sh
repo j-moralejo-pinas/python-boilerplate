@@ -11,9 +11,10 @@ set -euo pipefail
 
 # Validate inputs
 PYTHON_VERSION="${1:?Python version is required}"
-PYTHON_VERSION_MAX="${2:-}"
-REPO_TOPICS="${3:-}"
-WORKFLOW="${4:?Workflow is required}"
+WORKFLOW="${2:?Workflow is required}"
+PYTHON_VERSION_MAX="${3:-}"
+REPO_TOPICS="${4:-}"
+
 
 # Get GITHUB_REPOSITORY from git remote URL
 # Convert from git@github.com:owner/repo.git or https://github.com/owner/repo.git to owner/repo
@@ -88,9 +89,10 @@ export GITHUB_REPOSITORY
 chmod +x ./scripts/init/configure-project.sh
 ./scripts/init/configure-project.sh \
   "$PYTHON_VERSION" \
+  "$WORKFLOW" \
   "$PYTHON_VERSION_MAX" \
-  "$REPO_TOPICS" \
-  "$WORKFLOW"
+  "$REPO_TOPICS"
+
 
 echo "✓ Step 1 complete"
 echo ""

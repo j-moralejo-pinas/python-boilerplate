@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Type of release: major, minor, or patch (default: minor)'
+        description: 'Type of release: auto, major, minor, or patch (default: auto)'
         required: false
         default: 'auto'
         type: choice

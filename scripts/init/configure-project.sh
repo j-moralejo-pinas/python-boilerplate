@@ -5,9 +5,9 @@
 set -euo pipefail
 
 PYTHON_VERSION="${1:?Python version is required}"
-PYTHON_VERSION_MAX="${2:-}"
-REPO_TOPICS="${3:-}"
-WORKFLOW="${4:?Workflow is required}"
+WORKFLOW="${2:?Workflow is required}"
+PYTHON_VERSION_MAX="${3:-}"
+REPO_TOPICS="${4:-}"
 
 # Get repository info using the dedicated script
 chmod +x ./scripts/init/get-repo-info.sh
@@ -15,7 +15,7 @@ source ./scripts/init/get-repo-info.sh
 
 # Initialize project metadata
 chmod +x ./scripts/init/setup-project-metadata.sh
-./scripts/init/setup-project-metadata.sh "$REPO_NAME" "$REPO_DESC" "$PYTHON_VERSION" "$PYTHON_VERSION_MAX" "$REPO_TOPICS" "$WORKFLOW"
+./scripts/init/setup-project-metadata.sh "$REPO_NAME" "$REPO_DESC" "$PYTHON_VERSION" "$WORKFLOW" "$PYTHON_VERSION_MAX" "$REPO_TOPICS"
 
 # Commit and push changes
 chmod +x ./scripts/init/commit-and-push.sh

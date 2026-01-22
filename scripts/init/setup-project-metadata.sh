@@ -248,12 +248,12 @@ if [[ $# -lt 3 || $# -gt 6 ]]; then
     usage
 fi
 
-PROJECT_NAME="$1"
-DESCRIPTION="$2"
-MIN_PYTHON="$3"
-MAX_PYTHON="$4"
-KEYWORDS="$5"
-WORKFLOW="$6"
+PROJECT_NAME="${1:?Project name is required}"
+DESCRIPTION="${2:?Description is required}"
+MIN_PYTHON="${3:?Minimum Python version is required}"
+WORKFLOW="${4:?Workflow is required}"
+MAX_PYTHON="${5:-}"
+KEYWORDS="${6:-}"
 
 # Validate project name
 if [[ ! "$PROJECT_NAME" =~ ^[a-zA-Z0-9_-]+$ ]]; then
