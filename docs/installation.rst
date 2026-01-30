@@ -1,7 +1,7 @@
 Installation Guide
 ==================
 
-This guide provides step-by-step instructions for installing and setting up the package-name project template. Choose the installation section that best fits your needs.
+This guide provides step-by-step instructions for installing and setting up the package-name project. Choose the installation section that best fits your needs.
 
 .. contents:: Table of Contents
     :local:
@@ -19,7 +19,7 @@ Before installing the project, ensure you have the following requirements:
 User Installation
 =================
 
-This section is for users who want to use the project template without modifying the source code.
+This section is for users who want to use the project without modifying the source code.
 
 Quick Start
 -----------
@@ -103,74 +103,29 @@ Developer Installation
 
 This section is for developers who want to contribute to the project or modify the source code.
 
-Development Setup
------------------
+Prerequisites
+-------------
 
-1. **Clone and Navigate**
+- Git or GitHub CLI installed
+- NixOS or Nix package manager
+- direnv and nix-direnv for environment management
 
-.. code-block::
+Developer Environment Setup
+---------------------------
 
-    git clone https://github.com/j-moralejo-pinas/package-name.git
-    cd package-name
+To set up the development environment, run:
 
-2. **Set Up Development Environment**: Create a virtual environment (recommended)
+.. code-block:: bash
 
-.. code-block::
+    git clone https://github.com/j-moralejo-pinas/package-name.git && cd package-name && chmod +x setup-dev.sh && ./setup-dev.sh
 
-    conda create -n package-name-dev python=3.x
-    conda activate package-name-dev
+This will:
 
-3. **Install in Development Mode**: Install the package with development dependencies
-    This installs the project in editable mode with all development tools including:
-
-    * ``pytest`` - Testing framework
-    * ``pyright`` - Type checking
-    * ``pre-commit`` - Git hooks for code quality
-    * ``ruff`` - Fast Python linter and formatter
-    * ``pydoclint`` - Documentation linting
-    * ``docformatter`` - Documentation formatting
-    * ``pytest-cov`` - Test coverage
-    * ``pyupgrade`` - Code modernization
-    * ``sphinx`` - Documentation generation
-    * ``sphinx-autoapi`` - Automatic API documentation generation
-
-.. code-block::
-
-    pip install -e ".[dev,docs]"
-
-4. **Set Up Pre-commit Hooks**: Install pre-commit hooks to ensure code quality
-
-.. code-block::
-
-    pre-commit install
-
-5. **Configure Type Checking**: Link your development environment to Pyright for proper type checking.
-
-.. code-block::
-
-    {
-        "venvPath": "/path/to/your/conda/envs",
-        "venv": "package-name-dev"
-    }
-
-.. [#f1] Replace ``/path/to/your/conda/envs`` with your actual conda environments path (e.g., ``/home/username/miniconda3/envs`` or ``/home/username/micromamba/envs``).
-
-6. **Configure Environment**: Set the ``PYTHONPATH`` environment variable or add it to your shell profile to include the source directory (``~/.bashrc``, ``~/.zshrc``, etc.)
-
-.. code-block::
-
-    export PYTHONPATH="${PWD}/src:${PYTHONPATH}"
-
-    Or add this to your shell profile (``~/.bashrc``, ``~/.zshrc``, etc.).
-
-7. **Verify Installation**: Test that the development installation was successful
-
-.. code-block::
-
-    python -c "import package_name; print('Development installation successful!')"
-    pytest --version
-    ruff --version
-    pyright --version
+- Install all runtime dependencies including system and Python packages
+- Install development tools (pytest, ruff, pre-commit, etc.)
+- Install documentation tools (sphinx, sphinx-autoapi)
+- Set up direnv to automatically activate the environment when you enter the project directory
+- Set up pre-commit hooks for code quality checks
 
 Troubleshooting
 ===============

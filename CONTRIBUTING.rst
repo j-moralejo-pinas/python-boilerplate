@@ -7,66 +7,18 @@ We welcome contributions to the package-name project! This guide will help you g
 📋 Table of Contents
 ===================
 
-1. `Getting Started`_
-2. `Development Setup`_
-3. `Development Workflow`_
-4. `Branching Model and Workflow`_
-5. `Code Standards`_
-6. `Testing`_
-7. `Documentation`_
-8. `Submitting Changes`_
-9. `Issue Reporting`_
-10. `Project Structure`_
-
-Getting Started
-===============
-
-Prerequisites
--------------
-
-- Python 3.x
-- Git
-- Docker (optional, for containerized deployment)
-- Nix or NixOS (optional, for Nix-based environment management)
-
-Installation
-------------
-
-1. Clone the repository to your local machine:
-
-.. code-block:: bash
-
-    git clone https://github.com/j-moralejo-pinas/package-name.git
-    cd package-name
-
-2. Install all system dependencies or, optionally, if you are using Nix or NixOS, activate the Nix shell:
-
-.. code-block:: bash
-
-    nix develop
-
-3. Create and activate a virtual environment. You can use uv for this:
-
-.. code-block:: bash
-
-    uv venv
-    source .venv/bin/activate
-
-4. Install the package using your preferred method (e.g., pip, poetry, uv, etc.).
-
-.. code-block:: bash
-
-    uv pip install -e .
+1. `Development Setup`_
+2. `Development Workflow`_
+3. `Branching Model and Workflow`_
+4. `Code Standards`_
+5. `Testing`_
+6. `Documentation`_
+7. `Submitting Changes`_
+8. `Issue Reporting`_
+9. `Project Structure`_
 
 Development Setup
 =================
-
-Prerequisites
--------------
-
-- Git or GitHub CLI installed
-- NixOS or Nix package manager
-- direnv and nix-direnv for environment management
 
 Forking the Repository (Optional)
 ---------------------------------
@@ -90,19 +42,7 @@ Forking the Repository (Optional)
 Development Environment Setup
 -----------------------------
 
-To set up the development environment, run:
-
-.. code-block:: bash
-
-    git clone https://github.com/j-moralejo-pinas/package-name.git && cd package-name && chmod +x setup-dev.sh && ./setup-dev.sh
-
-This will:
-
-- Install all runtime dependencies including system and Python packages
-- Install development tools (pytest, ruff, pre-commit, etc.)
-- Install documentation tools (sphinx, sphinx-autoapi)
-- Set up direnv to automatically activate the environment when you enter the project directory
-- Set upd pre-commit hooks for code quality checks
+To set up the development environment, refer to the `Installation <installation>`_ section.
 
 <dev_workflow>
 
