@@ -8,9 +8,9 @@ set -euo pipefail
 REPO_SLUG="${1:?Repository slug is required}"
 REPO_TOPICS="${2:-}"
 
-# Convert space-separated topics to JSON array
+# Convert comma- or space-separated topics to JSON array
 if [ -n "${REPO_TOPICS:-}" ]; then
-  REPO_TOPICS_JSON=$(echo "$REPO_TOPICS" | tr ' ' '\n' | jq -R . | jq -s .)
+  REPO_TOPICS_JSON=$(echo "$REPO_TOPICS" | tr ',' '\n' | tr ' ' '\n' | grep -v '^$' | jq -R . | jq -s .)
 else
   REPO_TOPICS_JSON='[]'
 fi
