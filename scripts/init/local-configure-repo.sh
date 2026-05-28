@@ -138,6 +138,7 @@ rm -rf ./scripts/init
 if [[ -d "./scripts" ]] && [[ -z "$(ls -A ./scripts)" ]]; then
     rm -rf ./scripts
 fi
+rm -f ./.github/workflows/configure_repo.yml
 git add -A scripts/
 git commit -m "chore: remove init scripts after project initialisation"
 git push
