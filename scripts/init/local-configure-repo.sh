@@ -132,6 +132,18 @@ chmod +x ./scripts/init/setup-venv.sh
 echo "✓ Step 6 complete"
 echo ""
 
+# Step 7: Remove init scripts (no longer needed after initialisation)
+echo "Step 7: Removing init scripts..."
+rm -rf ./scripts/init
+if [[ -d "./scripts" ]] && [[ -z "$(ls -A ./scripts)" ]]; then
+    rm -rf ./scripts
+fi
+git add -A scripts/
+git commit -m "chore: remove init scripts after project initialisation"
+git push
+echo "✓ Step 7 complete"
+echo ""
+
 echo "=========================================="
 echo "✓ Repository configuration completed!"
 echo "=========================================="

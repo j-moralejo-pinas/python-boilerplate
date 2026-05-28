@@ -17,6 +17,10 @@ source ./scripts/init/get-repo-info.sh
 chmod +x ./scripts/init/setup-project-metadata.sh
 ./scripts/init/setup-project-metadata.sh "$REPO_NAME" "$REPO_DESC" "$PYTHON_VERSION" "$WORKFLOW" "$PYTHON_VERSION_MAX" "$REPO_TOPICS"
 
+# Pin ci-cd-python workflows to current HEAD commit
+chmod +x ./scripts/init/setup-cicd-version.sh
+./scripts/init/setup-cicd-version.sh
+
 # Commit and push changes
 chmod +x ./scripts/init/commit-and-push.sh
 ./scripts/init/commit-and-push.sh "Initialize project with name '$REPO_NAME' and Python $PYTHON_VERSION"
