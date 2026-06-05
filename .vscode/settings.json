@@ -19,9 +19,6 @@
         "python",
         "python-common",
     ],
-    "python.autoComplete.extraPaths": [
-        "src"
-    ],
     "cSpell.words": [],
     "cSpell.caseSensitive": false,
     "cSpell.ignoreWords": [],
